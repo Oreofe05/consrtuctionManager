@@ -11,7 +11,10 @@ import {
   Settings,
   HelpCircle,
   X,
+  HardHat,
+  Activity,
 } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 const navigation = [
   {
@@ -21,6 +24,7 @@ const navigation = [
         name: "Dashboard",
         icon: LayoutDashboard,
         path: "/",
+        end: true,
       },
     ],
   },
@@ -76,82 +80,115 @@ const navigation = [
   },
 ];
 
+const bottomNavigation = [
+  { name: "Users & Crews", icon: Users, path: "/users" },
+  { name: "System Settings", icon: Settings, path: "/settings" },
+  { name: "Help & Specs", icon: HelpCircle, path: "/help" },
+];
+
 function Sidebar({ mobileOpen, setMobileOpen }) {
+  const linkClasses = ({ isActive }) =>
+    `group relative flex items-center gap-3 rounded-md px-3 py-2.5 text-xs font-black transition-all duration-150 ${
+      isActive
+        ? "bg-slate-900 text-amber-400 border-l-4 border-amber-500 shadow-md"
+        : "text-slate-200 hover:bg-slate-900/80 hover:text-white border-l-4 border-transparent"
+    }`;
+
   return (
     <>
+      {/* Mobile Backdrop */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-slate-950/50 lg:hidden"
+          className="fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-sm lg:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
+      {/* Sidebar Container */}
       <aside
         className={`
-          fixed left-0 top-0 z-50 flex h-screen w-72 flex-col
-          border-r border-slate-200 bg-white
-          transition-transform duration-300
+          fixed left-0 top-0 z-50 flex h-screen w-64 flex-col
+          border-r-2 border-slate-800 bg-slate-950 text-white
+          transition-transform duration-300 ease-in-out
           lg:translate-x-0
           ${mobileOpen ? "translate-x-0" : "-translate-x-full"}
         `}
       >
-        {/* Logo */}
-        <div className="flex h-20 items-center justify-between border-b border-slate-200 px-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white">
-              <FolderKanban size={21} />
+        {/* Brand Header */}
+        <div className="flex h-16 shrink-0 items-center justify-between border-b-2 border-slate-800/80 px-4">
+          <NavLink
+            to="/"
+            onClick={() => setMobileOpen(false)}
+            className="flex items-center gap-3 group"
+          >
+            <div className="relative flex h-9 w-9 items-center justify-center rounded border-2 border-amber-500/60 bg-slate-900 text-amber-400 shadow-inner group-hover:border-amber-400">
+              <HardHat size={19} strokeWidth={2.5} className="transition-transform group-hover:scale-105" />
+              <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-amber-500" />
+              </span>
             </div>
 
             <div>
-              <h1 className="text-sm font-bold tracking-tight text-slate-900">
-                BuildControl
-              </h1>
-              <p className="text-[11px] text-slate-500">
-                Project Management
+              <div className="flex items-center gap-1.5">
+                <h1 className="font-mono text-base font-black tracking-wider text-white uppercase">
+                  BuildControl
+                </h1>
+                <span className="rounded bg-slate-900 px-1.5 py-0.5 font-mono text-[9px] font-black text-amber-400 border-2 border-slate-700">
+                  v2.4
+                </span>
+              </div>
+              <p className="font-mono text-[10px] font-extrabold uppercase tracking-wider text-slate-300">
+                Site Ops & Construction
               </p>
             </div>
-          </div>
+          </NavLink>
 
           <button
+            type="button"
             onClick={() => setMobileOpen(false)}
-            className="rounded-lg p-2 text-slate-500 hover:bg-slate-100 lg:hidden"
+            aria-label="Close navigation menu"
+            className="rounded border-2 border-slate-800 bg-slate-900 p-1.5 text-slate-300 transition-colors hover:text-white lg:hidden"
           >
-            <X size={20} />
+            <X size={18} strokeWidth={2.5} />
           </button>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto px-4 py-6">
+        {/* Main Nav Items */}
+        <nav className="flex-1 overflow-y-auto px-3 py-5 scrollbar-thin scrollbar-thumb-slate-800">
           {navigation.map((section) => (
-            <div key={section.label} className="mb-7">
-              <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-slate-400">
-                {section.label}
-              </p>
+            <div key={section.label} className="mb-6">
+              <div className="mb-2 flex items-center justify-between px-3">
+                <p className="font-mono text-xs font-black uppercase tracking-widest text-slate-300">
+                  {section.label}
+                </p>
+                <div className="h-0.5 flex-1 bg-slate-800 ml-2" />
+              </div>
 
               <div className="space-y-1">
                 {section.items.map((item) => {
                   const Icon = item.icon;
 
                   return (
-                    <a
+                    <NavLink
                       key={item.name}
-                      href={item.path}
+                      to={item.path}
+                      end={item.end}
                       onClick={() => setMobileOpen(false)}
-                      className={`
-                        group flex items-center gap-3 rounded-xl px-3 py-2.5
-                        text-sm font-medium text-slate-600
-                        transition-colors
-                        hover:bg-slate-100 hover:text-slate-900
-                        ${
-                          item.name === "Dashboard"
-                            ? "bg-slate-900 text-white hover:bg-slate-900 hover:text-white"
-                            : ""
-                        }
-                      `}
+                      className={linkClasses}
                     >
-                      <Icon size={18} strokeWidth={1.8} />
-                      <span>{item.name}</span>
-                    </a>
+                      {({ isActive }) => (
+                        <>
+                          <Icon
+                            size={17}
+                            strokeWidth={2.5}
+                            className={`transition-colors ${
+                              isActive ? "text-amber-400" : "text-slate-400 group-hover:text-amber-400"
+                            }`}
+                          />
+                          <span className="truncate uppercase tracking-wide">{item.name}</span>
+                        </>
+                      )}
+                    </NavLink>
                   );
                 })}
               </div>
@@ -159,31 +196,49 @@ function Sidebar({ mobileOpen, setMobileOpen }) {
           ))}
         </nav>
 
-        {/* Bottom Navigation */}
-        <div className="border-t border-slate-200 p-4">
-          <a
-            href="/users"
-            className="mb-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-          >
-            <Users size={18} strokeWidth={1.8} />
-            Users
-          </a>
+        {/* Site Operational Status Card */}
+        <div className="mx-3 my-2 rounded border-2 border-slate-800 bg-slate-900 p-3 shadow-md">
+          <div className="flex items-center justify-between font-mono text-xs text-slate-200 font-extrabold">
+            <span className="flex items-center gap-1.5 text-emerald-400 font-black">
+              <Activity size={14} strokeWidth={2.5} /> ALL SYSTEMS GO
+            </span>
+            <span className="text-amber-400 font-black">98.4% EFF</span>
+          </div>
+          <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-950 border border-slate-800">
+            <div className="h-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]" style={{ width: "84%" }} />
+          </div>
+          <p className="mt-2 font-mono text-[10px] font-extrabold text-slate-300 text-right uppercase">
+            Active Shift: <strong className="text-white">Crew B (Day)</strong>
+          </p>
+        </div>
 
-          <a
-            href="/settings"
-            className="mb-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-          >
-            <Settings size={18} strokeWidth={1.8} />
-            Settings
-          </a>
+        {/* Bottom Nav Section */}
+        <div className="shrink-0 border-t-2 border-slate-800/80 p-3 space-y-1 bg-slate-950">
+          {bottomNavigation.map((item) => {
+            const Icon = item.icon;
 
-          <a
-            href="/help"
-            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-          >
-            <HelpCircle size={18} strokeWidth={1.8} />
-            Help & Support
-          </a>
+            return (
+              <NavLink
+                key={item.name}
+                to={item.path}
+                onClick={() => setMobileOpen(false)}
+                className={linkClasses}
+              >
+                {({ isActive }) => (
+                  <>
+                    <Icon
+                      size={17}
+                      strokeWidth={2.5}
+                      className={`transition-colors ${
+                        isActive ? "text-amber-400" : "text-slate-400 group-hover:text-amber-400"
+                      }`}
+                    />
+                    <span className="truncate uppercase tracking-wide">{item.name}</span>
+                  </>
+                )}
+              </NavLink>
+            );
+          })}
         </div>
       </aside>
     </>

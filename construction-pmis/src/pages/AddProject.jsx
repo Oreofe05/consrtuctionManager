@@ -8,9 +8,15 @@ import {
   MapPin,
   Users,
   Wallet,
-  X,
+  ShieldAlert,
+  HardHat,
+  ArrowRight,
+  Activity,
+  Plus,
+  RotateCcw,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { addProject } from "../data/projects";
 
 const initialForm = {
   name: "",
@@ -46,6 +52,7 @@ function AddProject() {
 
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
+  const [generalError, setGeneralError] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e) => {
@@ -62,33 +69,34 @@ function AddProject() {
         [name]: "",
       }));
     }
+    if (generalError) setGeneralError("");
   };
 
   const validate = () => {
     const newErrors = {};
 
     if (!form.name.trim()) {
-      newErrors.name = "Project name is required.";
+      newErrors.name = "PROJECT TITLE IS REQUIRED";
     }
 
     if (!form.code.trim()) {
-      newErrors.code = "Project code is required.";
+      newErrors.code = "SITE TASK CODE IS REQUIRED";
     }
 
     if (!form.category) {
-      newErrors.category = "Select a project category.";
+      newErrors.category = "SELECT A PROJECT CATEGORY";
     }
 
     if (!form.location.trim()) {
-      newErrors.location = "Project location is required.";
+      newErrors.location = "SITE LOCATION IS REQUIRED";
     }
 
     if (!form.startDate) {
-      newErrors.startDate = "Start date is required.";
+      newErrors.startDate = "START DATE IS REQUIRED";
     }
 
     if (!form.endDate) {
-      newErrors.endDate = "End date is required.";
+      newErrors.endDate = "EXPECTED END DATE IS REQUIRED";
     }
 
     if (
@@ -96,15 +104,15 @@ function AddProject() {
       form.endDate &&
       form.endDate < form.startDate
     ) {
-      newErrors.endDate = "End date cannot be before the start date.";
+      newErrors.endDate = "END DATE CANNOT PRECEDE START DATE";
     }
 
     if (!form.budget || Number(form.budget) <= 0) {
-      newErrors.budget = "Enter a valid project budget.";
+      newErrors.budget = "ENTER A VALID BUDGET GREATER THAN ZERO";
     }
 
     if (!form.manager) {
-      newErrors.manager = "Select a project manager.";
+      newErrors.manager = "ASSIGN A SITE PROJECT MANAGER";
     }
 
     return newErrors;
@@ -113,77 +121,98 @@ function AddProject() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const validationErrors = validate();
+    const formErrors = validate();
 
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      setGeneralError("CANNOT COMMENCE SITE REGISTRATION: COMPLETE ALL MANDATORY FIELDS.");
       return;
     }
 
-    console.log("New project:", form);
+    const newProject = {
+      id: form.code.trim().toUpperCase(),
+      name: form.name.trim(),
+      code: form.code.trim().toUpperCase(),
+      category: form.category,
+      location: form.location.trim(),
+      description: form.description.trim(),
+      startDate: form.startDate,
+      endDate: form.endDate,
+      budget: Number(form.budget),
+      spent: 0,
+      manager: form.manager,
+      status: form.status,
+      progress: Number(form.progress),
+      team: ["PM"],
+    };
+
+    addProject(newProject);
 
     setSubmitted(true);
+    setGeneralError("");
   };
 
   const handleReset = () => {
     setForm(initialForm);
     setErrors({});
+    setGeneralError("");
     setSubmitted(false);
   };
 
   if (submitted) {
     return (
-      <div className="mx-auto flex min-h-[calc(100vh-10rem)] max-w-2xl items-center justify-center">
-        <div className="w-full rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm sm:p-12">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-            <CheckCircle2 size={32} />
+      <div className="mx-auto flex min-h-[calc(100vh-10rem)] max-w-2xl items-center justify-center p-4">
+        <div className="w-full rounded-md border-2 border-slate-800 bg-slate-900 p-8 text-center shadow-2xl text-white sm:p-12">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded border-2 border-emerald-500 bg-emerald-950 text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+            <CheckCircle2 size={40} strokeWidth={2.5} />
           </div>
 
-          <h1 className="mt-6 text-2xl font-bold text-slate-900">
-            Project Created Successfully
+          <h1 className="mt-6 font-mono text-2xl font-black uppercase tracking-wider text-white">
+            Site Dossier Established
           </h1>
 
-          <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-slate-500">
-            The project information has been validated and is ready to be
-            stored in the project management system.
+          <p className="mx-auto mt-3 max-w-md font-sans text-xs font-bold leading-relaxed text-slate-300">
+            Project specs have been validated and deployed to the BuildControl operational database.
           </p>
 
-          <div className="mt-6 rounded-2xl bg-slate-50 p-4 text-left">
-            <p className="text-xs text-slate-400">Project</p>
-            <p className="mt-1 font-semibold text-slate-900">
+          <div className="mt-6 rounded border-2 border-slate-800 bg-slate-950 p-5 text-left font-mono">
+            <span className="text-[10px] font-black uppercase text-amber-400">PROJECT TITLE</span>
+            <p className="mt-1 font-mono text-base font-black text-white uppercase">
               {form.name}
             </p>
 
-            <div className="mt-4 grid grid-cols-2 gap-4">
+            <div className="mt-4 grid grid-cols-2 gap-4 border-t-2 border-slate-800/80 pt-3">
               <div>
-                <p className="text-xs text-slate-400">Project Code</p>
-                <p className="mt-1 text-sm font-medium text-slate-700">
-                  {form.code}
+                <span className="text-[10px] font-black uppercase text-slate-400">SITE TASK CODE</span>
+                <p className="mt-1 text-sm font-black text-amber-400">
+                  {form.code.toUpperCase()}
                 </p>
               </div>
 
               <div>
-                <p className="text-xs text-slate-400">Budget</p>
-                <p className="mt-1 text-sm font-medium text-slate-700">
+                <span className="text-[10px] font-black uppercase text-slate-400">ALLOCATED CAP</span>
+                <p className="mt-1 text-sm font-black text-emerald-400">
                   ₦{Number(form.budget).toLocaleString()}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
             <button
               onClick={() => navigate("/projects")}
-              className="rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
+              className="group flex items-center justify-center gap-2 rounded border-2 border-amber-400 bg-amber-500 px-6 py-3 font-mono text-xs font-black uppercase text-slate-950 transition-all hover:bg-amber-400"
             >
-              View Projects
+              <span>VIEW SITE DIRECTORY</span>
+              <ArrowRight size={16} strokeWidth={2.5} />
             </button>
 
             <button
               onClick={handleReset}
-              className="rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              className="flex items-center justify-center gap-2 rounded border-2 border-slate-700 bg-slate-800 px-6 py-3 font-mono text-xs font-black uppercase text-white transition-colors hover:border-amber-500 hover:text-amber-400"
             >
-              Add Another Project
+              <Plus size={16} strokeWidth={2.5} />
+              <span>REGISTER ANOTHER SITE</span>
             </button>
           </div>
         </div>
@@ -192,55 +221,66 @@ function AddProject() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl">
-      {/* Header */}
-      <div className="mb-7">
+    <div className="mx-auto max-w-5xl space-y-6 text-white pb-12">
+      {/* Navigation & Header Section */}
+      <div>
         <Link
           to="/projects"
-          className="mb-5 inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900"
+          className="group mb-4 inline-flex items-center gap-2 font-mono text-xs font-black uppercase text-slate-300 transition-colors hover:text-amber-400"
         >
-          <ArrowLeft size={16} />
-          Back to Projects
+          <ArrowLeft size={16} strokeWidth={2.5} className="transition-transform group-hover:-translate-x-1" />
+          <span>RETURN TO SITE DIRECTORY</span>
         </Link>
 
         <div>
-          <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-400">
-            Project Management
-          </p>
+          <div className="mb-2 flex items-center gap-2 font-mono text-xs font-black uppercase tracking-wider text-slate-300">
+            <span className="flex items-center gap-1.5 rounded bg-slate-900 px-2.5 py-1 border-2 border-slate-800 text-amber-400">
+              <HardHat size={15} strokeWidth={2.5} /> SITE REGISTRATION TERMINAL
+            </span>
+            <span className="text-slate-600">/</span>
+            <span className="text-amber-400 font-black">NEW SITE DOSSIER</span>
+          </div>
 
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-            Add New Project
+          <h1 className="font-mono text-3xl font-black tracking-tight text-white uppercase sm:text-4xl">
+            Register New Construction Site
           </h1>
 
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-            Create a new construction project and provide the information
-            required to monitor it throughout its lifecycle.
+          <p className="mt-2 max-w-2xl font-mono text-xs font-bold text-slate-300 leading-relaxed">
+            Provision operational metadata, timelines, and financial capital for active site monitoring.
           </p>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit}>
-        {/* Basic Information */}
-        <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <div className="flex items-center gap-3 border-b border-slate-100 px-5 py-5 sm:px-6">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
-              <FileText size={19} />
+      {/* General Form Error Alert Banner */}
+      {generalError && (
+        <div className="flex items-center gap-3 rounded border-2 border-rose-500 bg-rose-950 p-4 font-mono text-xs font-black text-rose-300 shadow-xl">
+          <ShieldAlert size={20} strokeWidth={2.5} className="shrink-0 text-rose-400" />
+          <span>{generalError}</span>
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Section 1: Basic Information */}
+        <section className="rounded-md border-2 border-slate-800 bg-slate-900 shadow-xl">
+          <div className="flex items-center gap-3 border-b-2 border-slate-800/80 px-5 py-4 sm:px-6">
+            <div className="flex h-10 w-10 items-center justify-center rounded border-2 border-amber-500/50 bg-slate-950 font-mono text-amber-400 shadow-inner">
+              <FileText size={20} strokeWidth={2.5} />
             </div>
 
             <div>
-              <h2 className="font-semibold text-slate-900">
-                Basic Information
+              <h2 className="font-mono text-sm font-black uppercase tracking-wider text-white">
+                Core Project Metadata
               </h2>
 
-              <p className="mt-1 text-xs text-slate-500">
-                General information about the construction project.
+              <p className="mt-0.5 font-mono text-xs font-bold text-slate-300">
+                Primary identifying specifications & site geography
               </p>
             </div>
           </div>
 
           <div className="grid gap-5 p-5 sm:p-6 md:grid-cols-2">
             <FormField
-              label="Project Name"
+              label="PROJECT TITLE"
               required
               error={errors.name}
             >
@@ -248,13 +288,13 @@ function AddProject() {
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                placeholder="e.g. Faculty of Engineering Renovation"
+                placeholder="e.g. FACULTY OF ENGINEERING RENOVATION"
                 className={inputClass(errors.name)}
               />
             </FormField>
 
             <FormField
-              label="Project Code"
+              label="SITE TASK CODE"
               required
               error={errors.code}
             >
@@ -268,7 +308,7 @@ function AddProject() {
             </FormField>
 
             <FormField
-              label="Project Category"
+              label="PROJECT CATEGORY"
               required
               error={errors.category}
             >
@@ -276,14 +316,14 @@ function AddProject() {
                 name="category"
                 value={form.category}
                 onChange={handleChange}
-                placeholder="Select category"
+                placeholder="[ SELECT CATEGORY ]"
                 options={categories}
                 error={errors.category}
               />
             </FormField>
 
             <FormField
-              label="Project Manager"
+              label="ASSIGNED PROJECT MANAGER"
               required
               error={errors.manager}
             >
@@ -291,7 +331,7 @@ function AddProject() {
                 name="manager"
                 value={form.manager}
                 onChange={handleChange}
-                placeholder="Select project manager"
+                placeholder="[ SELECT PROJECT MANAGER ]"
                 options={managers}
                 error={errors.manager}
               />
@@ -299,22 +339,23 @@ function AddProject() {
 
             <div className="md:col-span-2">
               <FormField
-                label="Project Location"
+                label="SITE LOCATION & COORDINATES"
                 required
                 error={errors.location}
               >
                 <div className="relative">
                   <MapPin
-                    size={17}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                    size={16}
+                    strokeWidth={2.5}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-500"
                   />
 
                   <input
                     name="location"
                     value={form.location}
                     onChange={handleChange}
-                    placeholder="e.g. Faculty of Engineering Complex"
-                    className={`${inputClass(errors.location)} pl-10`}
+                    placeholder="e.g. Faculty of Engineering Complex, Zone B"
+                    className={`${inputClass(errors.location)} pl-9`}
                   />
                 </div>
               </FormField>
@@ -322,7 +363,7 @@ function AddProject() {
 
             <div className="md:col-span-2">
               <FormField
-                label="Project Description"
+                label="PROJECT SCOPE & OBJECTIVES"
                 error={errors.description}
               >
                 <textarea
@@ -330,7 +371,7 @@ function AddProject() {
                   value={form.description}
                   onChange={handleChange}
                   rows={4}
-                  placeholder="Describe the purpose and scope of the project..."
+                  placeholder="Detail structural parameters, deliverables, and site boundaries..."
                   className={`${inputClass()} min-h-28 resize-y py-3`}
                 />
               </FormField>
@@ -338,27 +379,27 @@ function AddProject() {
           </div>
         </section>
 
-        {/* Timeline & Budget */}
-        <section className="mt-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <div className="flex items-center gap-3 border-b border-slate-100 px-5 py-5 sm:px-6">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
-              <CalendarDays size={19} />
+        {/* Section 2: Timeline & Budget */}
+        <section className="rounded-md border-2 border-slate-800 bg-slate-900 shadow-xl">
+          <div className="flex items-center gap-3 border-b-2 border-slate-800/80 px-5 py-4 sm:px-6">
+            <div className="flex h-10 w-10 items-center justify-center rounded border-2 border-amber-500/50 bg-slate-950 font-mono text-amber-400 shadow-inner">
+              <CalendarDays size={20} strokeWidth={2.5} />
             </div>
 
             <div>
-              <h2 className="font-semibold text-slate-900">
-                Timeline & Budget
+              <h2 className="font-mono text-sm font-black uppercase tracking-wider text-white">
+                Timeline & Financial Capital
               </h2>
 
-              <p className="mt-1 text-xs text-slate-500">
-                Define the planned project period and financial allocation.
+              <p className="mt-0.5 font-mono text-xs font-bold text-slate-300">
+                Scheduled completion target & allocated budget cap
               </p>
             </div>
           </div>
 
           <div className="grid gap-5 p-5 sm:p-6 md:grid-cols-2">
             <FormField
-              label="Start Date"
+              label="COMMENCEMENT DATE"
               required
               error={errors.startDate}
             >
@@ -372,7 +413,7 @@ function AddProject() {
             </FormField>
 
             <FormField
-              label="Expected Completion Date"
+              label="EXPECTED COMPLETION DATE"
               required
               error={errors.endDate}
             >
@@ -387,12 +428,12 @@ function AddProject() {
             </FormField>
 
             <FormField
-              label="Allocated Budget"
+              label="ALLOCATED BUDGET CAP"
               required
               error={errors.budget}
             >
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-slate-400">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 font-mono text-sm font-black text-amber-500">
                   ₦
                 </span>
 
@@ -403,12 +444,12 @@ function AddProject() {
                   value={form.budget}
                   onChange={handleChange}
                   placeholder="0.00"
-                  className={`${inputClass(errors.budget)} pl-9`}
+                  className={`${inputClass(errors.budget)} pl-8`}
                 />
               </div>
             </FormField>
 
-            <FormField label="Initial Status">
+            <FormField label="INITIAL STATUS">
               <Select
                 name="status"
                 value={form.status}
@@ -424,33 +465,33 @@ function AddProject() {
           </div>
         </section>
 
-        {/* Team & Progress */}
-        <section className="mt-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <div className="flex items-center gap-3 border-b border-slate-100 px-5 py-5 sm:px-6">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
-              <Users size={19} />
+        {/* Section 3: Setup & Progress */}
+        <section className="rounded-md border-2 border-slate-800 bg-slate-900 shadow-xl">
+          <div className="flex items-center gap-3 border-b-2 border-slate-800/80 px-5 py-4 sm:px-6">
+            <div className="flex h-10 w-10 items-center justify-center rounded border-2 border-amber-500/50 bg-slate-950 font-mono text-amber-400 shadow-inner">
+              <Users size={20} strokeWidth={2.5} />
             </div>
 
             <div>
-              <h2 className="font-semibold text-slate-900">
-                Project Setup
+              <h2 className="font-mono text-sm font-black uppercase tracking-wider text-white">
+                Initial Execution State
               </h2>
 
-              <p className="mt-1 text-xs text-slate-500">
-                Configure the initial monitoring state of the project.
+              <p className="mt-0.5 font-mono text-xs font-bold text-slate-300">
+                Baseline completion percentage & financial preview
               </p>
             </div>
           </div>
 
           <div className="grid gap-6 p-5 sm:p-6 md:grid-cols-2">
             <div>
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-slate-700">
-                  Initial Progress
+              <div className="flex items-center justify-between font-mono">
+                <label className="text-xs font-black uppercase text-slate-300">
+                  INITIAL PROGRESS METRIC
                 </label>
 
-                <span className="text-sm font-bold text-slate-900">
-                  {form.progress}%
+                <span className="text-sm font-black text-amber-400">
+                  {form.progress}% COMPLETE
                 </span>
               </div>
 
@@ -461,57 +502,58 @@ function AddProject() {
                 name="progress"
                 value={form.progress}
                 onChange={handleChange}
-                className="mt-4 w-full accent-slate-900"
+                className="mt-4 w-full accent-amber-500 cursor-pointer h-2 bg-slate-950 rounded border border-slate-800"
               />
 
-              <div className="mt-2 flex justify-between text-[10px] text-slate-400">
-                <span>0%</span>
-                <span>50%</span>
-                <span>100%</span>
+              <div className="mt-2 flex justify-between font-mono text-[10px] font-black text-slate-400">
+                <span>0% [ PHASE 1 ]</span>
+                <span>50% [ MID-PHASE ]</span>
+                <span>100% [ HANDOVER ]</span>
               </div>
             </div>
 
-            <div className="rounded-xl bg-slate-50 p-4">
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                <Wallet size={15} />
-                Budget Preview
+            <div className="rounded border-2 border-slate-800 bg-slate-950 p-4 font-mono">
+              <div className="flex items-center gap-2 text-xs font-black text-slate-300 uppercase">
+                <Wallet size={15} strokeWidth={2.5} className="text-amber-500" />
+                CAPITAL ALLOCATION PREVIEW
               </div>
 
-              <p className="mt-2 text-xl font-bold text-slate-900">
-                ₦
-                {Number(form.budget || 0).toLocaleString()}
+              <p className="mt-2 font-mono text-2xl font-black text-white">
+                ₦{Number(form.budget || 0).toLocaleString()}
               </p>
 
-              <p className="mt-1 text-xs text-slate-400">
-                Allocated project budget
+              <p className="mt-1 font-mono text-[10px] font-bold text-slate-400 uppercase">
+                TOTAL AUTHORIZED FIELD EXPENDITURE CAP
               </p>
             </div>
           </div>
         </section>
 
-        {/* Actions */}
-        <div className="mt-6 flex flex-col-reverse gap-3 pb-8 sm:flex-row sm:justify-end">
+        {/* Action Controls */}
+        <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-end">
           <button
             type="button"
             onClick={() => navigate("/projects")}
-            className="rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            className="rounded border-2 border-slate-800 bg-slate-900 px-5 py-3 font-mono text-xs font-black uppercase text-slate-300 transition-colors hover:border-slate-700 hover:text-white"
           >
-            Cancel
+            CANCEL REGISTRATION
           </button>
 
           <button
             type="button"
             onClick={handleReset}
-            className="rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            className="flex items-center justify-center gap-1.5 rounded border-2 border-slate-800 bg-slate-900 px-5 py-3 font-mono text-xs font-black uppercase text-slate-300 transition-colors hover:border-slate-700 hover:text-white"
           >
-            Reset
+            <RotateCcw size={14} strokeWidth={2.5} />
+            <span>RESET TERMINAL</span>
           </button>
 
           <button
             type="submit"
-            className="rounded-xl bg-slate-900 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-800"
+            className="flex items-center justify-center gap-2 rounded border-2 border-amber-400 bg-amber-500 px-6 py-3 font-mono text-xs font-black uppercase text-slate-950 shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all hover:bg-amber-400"
           >
-            Create Project
+            <Plus size={16} strokeWidth={2.5} />
+            <span>COMMENCE PROJECT DEPLOYMENT</span>
           </button>
         </div>
       </form>
@@ -522,16 +564,16 @@ function AddProject() {
 function FormField({ label, required, error, children }) {
   return (
     <div>
-      <label className="mb-2 block text-sm font-medium text-slate-700">
+      <label className="mb-2 block font-mono text-xs font-black uppercase tracking-wider text-slate-300">
         {label}
-        {required && <span className="ml-1 text-red-500">*</span>}
+        {required && <span className="ml-1 text-amber-500">*</span>}
       </label>
 
       {children}
 
       {error && (
-        <p className="mt-1.5 text-xs font-medium text-red-600">
-          {error}
+        <p className="mt-1.5 font-mono text-xs font-black uppercase text-rose-400">
+          ▲ {error}
         </p>
       )}
     </div>
@@ -552,12 +594,16 @@ function Select({
         name={name}
         value={value}
         onChange={onChange}
-        className={`${inputClass(error)} appearance-none pr-10`}
+        className={`${inputClass(error)} appearance-none pr-10 font-mono text-xs font-black text-amber-400 cursor-pointer`}
       >
-        {placeholder && <option value="">{placeholder}</option>}
+        {placeholder && (
+          <option value="" className="bg-slate-950 text-slate-400">
+            {placeholder}
+          </option>
+        )}
 
         {options.map((option) => (
-          <option key={option} value={option}>
+          <option key={option} value={option} className="bg-slate-950 text-white font-black">
             {option}
           </option>
         ))}
@@ -565,6 +611,7 @@ function Select({
 
       <ChevronDown
         size={16}
+        strokeWidth={2.5}
         className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
       />
     </div>
@@ -572,9 +619,9 @@ function Select({
 }
 
 function inputClass(error = false) {
-  return `h-11 w-full rounded-xl border ${
-    error ? "border-red-300 bg-red-50/30" : "border-slate-200"
-  } bg-white px-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:ring-2 focus:ring-slate-100`;
+  return `h-11 w-full rounded border-2 ${
+    error ? "border-rose-500 bg-rose-950/40 text-rose-200" : "border-slate-800 bg-slate-950 text-white"
+  } px-3.5 font-mono text-xs font-black placeholder:text-slate-500 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/40`;
 }
 
 export default AddProject;

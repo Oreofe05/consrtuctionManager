@@ -3,96 +3,108 @@ import {
   MapPin,
   Wallet,
   ArrowUpRight,
+  HardHat,
+  Activity,
 } from "lucide-react";
 import ProjectStatus from "./ProjectStatus";
 
 function ProjectCard({ project }) {
   return (
-    <div className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-      {/* Top */}
+    <div className="group relative rounded-md border-2 border-slate-800 bg-slate-900 p-5 shadow-xl text-white transition-all hover:border-slate-700 hover:shadow-2xl">
+      {/* Top Header Row */}
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <div className="mb-3 flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-slate-900" />
-            <span className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
+          <div className="mb-2 flex items-center gap-2 font-mono text-xs">
+            <span className="flex h-2 w-2 rounded-full bg-amber-500" />
+            <span className="rounded bg-slate-800 px-2 py-0.5 font-black uppercase tracking-wider text-amber-400 border-2 border-slate-700">
               {project.code}
             </span>
           </div>
 
-          <h3 className="truncate text-base font-semibold text-slate-900">
+          <h3 className="truncate font-mono text-base font-black uppercase tracking-wide text-white group-hover:text-amber-400 transition-colors">
             {project.name}
           </h3>
 
-          <div className="mt-2 flex items-center gap-1.5 text-xs text-slate-500">
-            <MapPin size={13} />
+          <div className="mt-1.5 flex items-center gap-1.5 font-mono text-xs font-bold text-slate-300">
+            <MapPin size={13} strokeWidth={2.5} className="text-amber-500 shrink-0" />
             <span className="truncate">{project.location}</span>
           </div>
         </div>
 
-        <ProjectStatus status={project.status} />
+        {/* Project Status Badge Component */}
+        <div className="shrink-0">
+          <ProjectStatus status={project.status} />
+        </div>
       </div>
 
-      {/* Progress */}
-      <div className="mt-6">
-        <div className="mb-2 flex items-center justify-between">
-          <span className="text-xs font-medium text-slate-500">
-            Project progress
+      {/* Industrial Progress Track */}
+      <div className="mt-5 border-t-2 border-slate-800/80 pt-4">
+        <div className="mb-2 flex items-center justify-between font-mono text-xs font-black">
+          <span className="flex items-center gap-1.5 text-slate-300 uppercase">
+            <Activity size={14} strokeWidth={2.5} className="text-amber-500" /> SITE PROGRESS
           </span>
 
-          <span className="text-xs font-bold text-slate-900">
-            {project.progress}%
+          <span className="font-black text-amber-400">
+            {project.progress}% <span className="text-[10px] text-slate-400 font-extrabold">COMPLETE</span>
           </span>
         </div>
 
-        <div className="h-2 overflow-hidden rounded-full bg-slate-100">
+        <div className="relative h-2.5 w-full overflow-hidden rounded-xs bg-slate-950 border-2 border-slate-800">
           <div
-            className="h-full rounded-full bg-slate-900 transition-all"
+            className="h-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)] transition-all duration-500"
             style={{ width: `${project.progress}%` }}
           />
         </div>
       </div>
 
-      {/* Details */}
-      <div className="mt-6 grid grid-cols-2 gap-3">
-        <div className="rounded-xl bg-slate-50 p-3">
-          <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
-            <Wallet size={13} />
-            Budget
+      {/* Parameter Metric Blocks */}
+      <div className="mt-5 grid grid-cols-2 gap-3 font-mono">
+        <div className="rounded border-2 border-slate-800 bg-slate-950 p-3">
+          <div className="flex items-center gap-1.5 text-[10px] font-black text-slate-400 uppercase">
+            <Wallet size={13} strokeWidth={2.5} className="text-slate-300" />
+            ALLOCATED BUDGET
           </div>
 
-          <p className="mt-1 text-sm font-semibold text-slate-900">
+          <p className="mt-1 text-xs font-black text-white">
             {project.budget}
           </p>
         </div>
 
-        <div className="rounded-xl bg-slate-50 p-3">
-          <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
-            <CalendarDays size={13} />
-            Deadline
+        <div className="rounded border-2 border-slate-800 bg-slate-950 p-3">
+          <div className="flex items-center gap-1.5 text-[10px] font-black text-slate-400 uppercase">
+            <CalendarDays size={13} strokeWidth={2.5} className="text-slate-300" />
+            TARGET DEADLINE
           </div>
 
-          <p className="mt-1 text-sm font-semibold text-slate-900">
+          <p className="mt-1 text-xs font-black text-white">
             {project.deadline}
           </p>
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
-        <div className="flex -space-x-2">
-          {project.team.map((member) => (
-            <div
-              key={member}
-              className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-slate-200 text-[9px] font-bold text-slate-700"
-            >
-              {member}
-            </div>
-          ))}
+      {/* Footer Crew & Action */}
+      <div className="mt-5 flex items-center justify-between border-t-2 border-slate-800/80 pt-3.5">
+        {/* Operator Initials Badges */}
+        <div className="flex items-center gap-1.5">
+          <div className="mr-1 font-mono text-[10px] font-black text-slate-400 uppercase hidden sm:block">
+            CREW:
+          </div>
+          <div className="flex -space-x-1">
+            {project.team.map((member) => (
+              <div
+                key={member}
+                className="flex h-7 w-7 items-center justify-center rounded border-2 border-slate-700 bg-slate-950 font-mono text-[10px] font-black text-amber-400 shadow-md transition-transform hover:z-10 hover:scale-110"
+              >
+                {member}
+              </div>
+            ))}
+          </div>
         </div>
 
-        <button className="flex items-center gap-1 text-xs font-semibold text-slate-600 transition group-hover:text-slate-900">
-          View details
-          <ArrowUpRight size={14} />
+        {/* Action Button */}
+        <button className="group/btn flex items-center gap-1 font-mono text-xs font-black uppercase text-slate-200 transition-colors hover:text-amber-400">
+          <span>SITE DOSSIER</span>
+          <ArrowUpRight size={14} strokeWidth={2.5} className="transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
         </button>
       </div>
     </div>

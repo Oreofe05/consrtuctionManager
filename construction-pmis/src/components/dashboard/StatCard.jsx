@@ -3,6 +3,8 @@ import {
   CircleCheck,
   Clock3,
   Wallet,
+  TrendingUp,
+  Activity,
 } from "lucide-react";
 
 const iconMap = {
@@ -12,31 +14,69 @@ const iconMap = {
   budget: Wallet,
 };
 
+const styleMap = {
+  projects: {
+    badge: "border-amber-500/60 text-amber-400 bg-slate-950",
+    indicator: "bg-amber-500",
+  },
+  completed: {
+    badge: "border-emerald-500/60 text-emerald-400 bg-slate-950",
+    indicator: "bg-emerald-500",
+  },
+  pending: {
+    badge: "border-sky-500/60 text-sky-400 bg-slate-950",
+    indicator: "bg-sky-500",
+  },
+  budget: {
+    badge: "border-emerald-500/60 text-emerald-400 bg-slate-950",
+    indicator: "bg-emerald-500",
+  },
+};
+
 function StatCard({ type, title, value, description, trend }) {
-  const Icon = iconMap[type];
+  const Icon = iconMap[type] || FolderKanban;
+  const cardStyle = styleMap[type] || styleMap.projects;
+
+  const isNegative = trend && (trend.includes("-") || trend.toLowerCase().includes("delay") || trend.toLowerCase().includes("over"));
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="group relative rounded-md border-2 border-slate-800 bg-slate-900 p-5 shadow-xl text-white transition-all hover:border-slate-700">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium text-slate-500">{title}</p>
+          <div className="flex items-center gap-2">
+            <span className={`h-2 w-2 rounded-full ${cardStyle.indicator}`} />
+            <p className="font-mono text-[11px] font-black uppercase tracking-wider text-slate-300">
+              {title}
+            </p>
+          </div>
 
-          <h3 className="mt-2 text-2xl font-bold tracking-tight text-slate-900">
+          {/* Bolder Value Text */}
+          <h3 className="mt-2.5 font-mono text-3xl font-black tracking-tight text-white group-hover:text-amber-400 transition-colors">
             {value}
           </h3>
         </div>
 
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
-          <Icon size={19} />
+        <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded border-2 font-mono shadow-inner ${cardStyle.badge}`}>
+          <Icon size={20} strokeWidth={2.5} />
         </div>
       </div>
 
-      <div className="mt-4 flex items-center gap-2">
-        <span className="text-xs font-semibold text-emerald-600">
-          {trend}
-        </span>
+      <div className="mt-4 flex items-center justify-between border-t-2 border-slate-800/80 pt-3 font-mono text-xs">
+        <div className="flex items-center gap-2">
+          {/* Bolder Trend Text */}
+          <span
+            className={`flex items-center gap-1 font-black ${
+              isNegative ? "text-rose-400" : "text-emerald-400"
+            }`}
+          >
+            <TrendingUp size={14} strokeWidth={2.5} className={isNegative ? "rotate-180" : ""} />
+            {trend}
+          </span>
+          <span className="text-slate-600 font-bold">|</span>
+          <span className="text-slate-300 font-bold truncate max-w-[140px]">{description}</span>
+        </div>
 
-        <span className="text-xs text-slate-400">{description}</span>
+        <Activity size={14} className="text-slate-500 group-hover:text-amber-400 transition-colors" />
       </div>
     </div>
   );
