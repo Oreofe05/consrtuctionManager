@@ -1,3 +1,4 @@
+
 import {
   LayoutDashboard,
   FolderKanban,
@@ -13,6 +14,7 @@ import {
   X,
   HardHat,
   Activity,
+  Bell,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -76,6 +78,11 @@ const navigation = [
         icon: FileText,
         path: "/reports",
       },
+      {
+        name: "Notifications",
+        icon: Bell,
+        path: "/notifications",
+      },
     ],
   },
 ];
@@ -93,6 +100,7 @@ function Sidebar({ mobileOpen, setMobileOpen }) {
         ? "bg-slate-900 text-amber-400 border-l-4 border-amber-500 shadow-md"
         : "text-slate-200 hover:bg-slate-900/80 hover:text-white border-l-4 border-transparent"
     }`;
+
 
   return (
     <>

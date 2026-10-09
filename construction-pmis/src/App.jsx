@@ -21,8 +21,14 @@ import Progress from "./pages/Progress";
 import Reports from "./pages/Reports";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
+import HelpSupport from "./pages/HelpSupport";
+import Login from "./pages/Login";
 
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
+import Notifications from "./pages/Notifications";
 
+// Fallback page for unknown routes
 function ComingSoon() {
   const location = useLocation();
 
@@ -65,44 +71,76 @@ function ComingSoon() {
   );
 }
 
+// Protected application pages
 function AppRoutes() {
   return (
-    <DashboardLayout>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
+    <ProtectedRoute>
+      <DashboardLayout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
 
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/projects/new" element={<AddProject />} />
-        <Route
-          path="/projects/:projectId"
-          element={<ProjectDetails />}
-        />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/new" element={<AddProject />} />
+          <Route
+            path="/projects/:projectId"
+            element={<ProjectDetails />}
+          />
 
-        <Route path="/tasks" element={<Tasks />} />
-        <Route path="/tasks/new" element={<TaskForm />} />
-        <Route path="/tasks/:taskId/edit" element={<TaskForm />} />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/tasks/new" element={<TaskForm />} />
+          <Route
+            path="/tasks/:taskId/edit"
+            element={<TaskForm />}
+          />
 
-        <Route path="/schedule" element={<Schedule />} />
-        <Route path="/resources" element={<Resources />} />
-        <Route path="/expenditure" element={<Expenditure />} />
-        <Route path="/progress" element={<Progress />} />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/users" element={<Users />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/help" element={<ComingSoon />} />
-
-        <Route path="*" element={<ComingSoon />} />
-      </Routes>
-    </DashboardLayout>
+          <Route path="/schedule" element={<Schedule />} />
+          <Route path="/resources" element={<Resources />} />
+          <Route path="/expenditure" element={<Expenditure />} />
+          <Route path="/progress" element={<Progress />} />
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/help" element={<HelpSupport />} />
+          <Route path="/notifications" element={<Notifications />} />
+          
+          <Route
+            path="*"
+            element={
+              <div className="rounded-xl border border-slate-200 bg-white p-8 text-center">
+                <h2 className="text-xl font-bold text-slate-900">
+                  Page Not Found
+                </h2>
+                <p className="mt-2 text-sm text-slate-500">
+                  The page you requested does not exist.
+                </p>
+                <Link
+                  to="/"
+                  className="mt-4 inline-block text-sm font-semibold text-blue-700 hover:text-blue-900"
+                >
+                  Return to Dashboard
+                </Link>
+              </div>
+            }
+          />
+        </Routes>
+      </DashboardLayout>
+    </ProtectedRoute>
   );
 }
 
+// Main application
 function App() {
   return (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/*" element={<AppRoutes />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
 export default App;
+
