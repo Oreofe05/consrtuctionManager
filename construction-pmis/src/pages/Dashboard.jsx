@@ -34,7 +34,7 @@ const statCards = [
     color: "emerald",
   },
   {
-    title: "Pending RFIs",
+    title: "Pending Inquiries",
     value: "18",
     change: "5 require attention",
     trend: "down",
@@ -42,7 +42,7 @@ const statCards = [
     color: "amber",
   },
   {
-    title: "Total Expenditure",
+    title: "Total Spent",
     value: "₦184.6M",
     change: "Across sample projects",
     trend: "up",
@@ -53,7 +53,7 @@ const statCards = [
 
 const projectHealth = [
   { label: "On Track", count: 7, color: "bg-emerald-400" },
-  { label: "At Risk", count: 3, color: "bg-amber-400" },
+  { label: "Needs Attention", count: 3, color: "bg-amber-400" },
   { label: "Delayed", count: 2, color: "bg-rose-500" },
 ];
 
@@ -75,7 +75,7 @@ const projects = [
     location: "Student Residential Area",
     manager: "Emmanuel Okafor",
     progress: 54,
-    status: "At Risk",
+    status: "Needs Attention",
     budget: "₦86.2M",
     spent: "₦58.7M",
     color: "bg-amber-400",
@@ -123,14 +123,14 @@ const activities = [
     color: "border-sky-500/50 text-sky-400 bg-slate-950",
   },
   {
-    title: "New expenditure recorded",
+    title: "New expense logged",
     detail: "Accommodation Block C · ₦1.25M",
     time: "Today, 8:40 AM",
     icon: Wallet,
     color: "border-emerald-500/50 text-emerald-400 bg-slate-950",
   },
   {
-    title: "Deadline approaching",
+    title: "Upcoming deadline",
     detail: "Electrical installation inspection",
     time: "Yesterday",
     icon: CalendarDays,
@@ -218,7 +218,7 @@ function SectionHeading({ title, subtitle, action, onAction }) {
 function StatusBadge({ status }) {
   const styles = {
     "On Track": "border-emerald-500 bg-emerald-950 text-emerald-300 shadow-[0_0_8px_rgba(16,185,129,0.3)]",
-    "At Risk": "border-amber-500 bg-amber-950 text-amber-300 shadow-[0_0_8px_rgba(245,158,11,0.3)]",
+    "Needs Attention": "border-amber-500 bg-amber-950 text-amber-300 shadow-[0_0_8px_rgba(245,158,11,0.3)]",
     Delayed: "border-rose-500 bg-rose-950 text-rose-300 shadow-[0_0_8px_rgba(244,63,94,0.3)]",
     Completed: "border-sky-500 bg-sky-950 text-sky-300 shadow-[0_0_8px_rgba(14,165,233,0.3)]",
   };
@@ -238,7 +238,7 @@ function Dashboard() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const userName = user?.name || "Operator";
+  const userName = user?.name || "Team Member";
   const firstName = userName.split(" ")[0];
 
   const [currentTime, setCurrentTime] = useState("");
@@ -272,7 +272,7 @@ function Dashboard() {
   }).format(new Date()).toUpperCase();
 
   return (
-    <div className="mx-auto max-w-[1600px] space-y-8 pb-12 font-mono text-white">
+    <div className="mx-auto max-w-[1600px] space-y-8 pb-12 font-mono text-white px-3 sm:px-6">
       {/* Page heading */}
       <section className="relative overflow-hidden rounded-md border-2 border-slate-800 bg-slate-900 p-6 shadow-2xl sm:p-8">
         <div className="pointer-events-none absolute -right-16 -top-24 h-72 w-72 rounded-full bg-amber-500/10 blur-3xl" />
@@ -283,16 +283,16 @@ function Dashboard() {
             <div className="mb-4 inline-flex items-center gap-2 rounded border-2 border-amber-500/50 bg-slate-950 px-3 py-1.5 shadow-[0_0_10px_rgba(245,158,11,0.2)]">
               <span className="h-2 w-2 animate-pulse rounded-full bg-amber-400" />
               <span className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-400">
-                ACTIVE SITE OPERATIONS TERMINAL
+                ACTIVE WORKSPACE DASHBOARD
               </span>
             </div>
 
             <h1 className="break-words text-3xl font-black uppercase tracking-tight sm:text-4xl text-white">
-              COMMAND: <span className="text-amber-400">{userName}</span>
+              WELCOME BACK, <span className="text-amber-400">{firstName}</span>
             </h1>
 
             <p className="mt-3 text-xs font-bold leading-relaxed text-slate-300 uppercase">
-              Welcome back, {firstName}. Monitor physical site progress, critical milestone deadlines, and budget performance across active construction directives.
+              Here is a quick overview of ongoing construction projects, upcoming deadlines, and budget tracking for your team.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
@@ -301,7 +301,7 @@ function Dashboard() {
                 className="flex items-center justify-center gap-2 rounded border-2 border-amber-400 bg-amber-500 px-5 py-3 font-mono text-xs font-black uppercase text-slate-950 shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all hover:bg-amber-400"
               >
                 <Plus size={16} strokeWidth={2.5} />
-                <span>NEW SITE PROJECT</span>
+                <span>ADD NEW PROJECT</span>
               </button>
 
               <button
@@ -309,7 +309,7 @@ function Dashboard() {
                 className="flex items-center justify-center gap-2 rounded border-2 border-slate-800 bg-slate-950 px-5 py-3 font-mono text-xs font-black uppercase text-slate-300 transition-colors hover:border-amber-500 hover:text-amber-400"
               >
                 <FileText size={16} strokeWidth={2.5} />
-                <span>REVIEW SITE DOSSIERS</span>
+                <span>VIEW REPORTS</span>
               </button>
             </div>
           </div>
@@ -322,7 +322,7 @@ function Dashboard() {
 
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                TERMINAL CLOCK
+                LOCAL TIME
               </p>
 
               <p className="mt-1 font-mono text-xl font-black tracking-wide text-amber-400">
@@ -342,8 +342,8 @@ function Dashboard() {
       {/* Summary cards */}
       <section>
         <SectionHeading
-          title="Operations Overview"
-          subtitle="Real-time performance metrics across active construction registers."
+          title="Overview Summary"
+          subtitle="Real-time key performance indicators across your projects."
         />
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -357,8 +357,8 @@ function Dashboard() {
       <section className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <div className="rounded-md border-2 border-slate-800 bg-slate-900 p-5 shadow-xl">
           <SectionHeading
-            title="Project Health Matrix"
-            subtitle="Categorized distribution of active site statuses."
+            title="Project Status Breakdown"
+            subtitle="Current health status across active sites."
           />
 
           <div className="space-y-5">
@@ -383,7 +383,7 @@ function Dashboard() {
                       </span>
                     </div>
                     <span className="text-xs font-black text-amber-400">
-                      {item.count} SITES
+                      {item.count} PROJECTS
                     </span>
                   </div>
 
@@ -405,19 +405,19 @@ function Dashboard() {
             <div className="flex items-center gap-2.5 text-amber-400">
               <HardHat size={18} strokeWidth={2.5} />
               <p className="text-xs font-black uppercase tracking-wider text-white">
-                Site Management Protocol
+                Quick Reminder
               </p>
             </div>
             <p className="mt-2 text-[10px] font-bold leading-relaxed text-slate-400 uppercase">
-              Audit delayed activities and site projects at risk prior to authorizing capital expenditure or resource dispatch.
+              Please review projects marked as delayed or needing attention before approving additional expenses or resource allocations.
             </p>
           </div>
         </div>
 
         <div className="rounded-md border-2 border-slate-800 bg-slate-900 p-5 shadow-xl xl:col-span-2">
           <SectionHeading
-            title="Project Progress Registry"
-            subtitle="Illustrative physical completion status across selected construction projects."
+            title="Active Projects Progress"
+            subtitle="Recent physical completion percentages and budget statuses."
             action="VIEW ALL PROJECTS"
             onAction={() => navigate("/projects")}
           />
@@ -437,7 +437,7 @@ function Dashboard() {
                       {project.name}
                     </h3>
                     <p className="mt-1 text-xs font-bold text-slate-400 uppercase">
-                      {project.location} · SUPERVISOR: {project.manager}
+                      {project.location} · Lead: {project.manager}
                     </p>
                   </div>
 
@@ -447,7 +447,7 @@ function Dashboard() {
                 <div className="mt-4">
                   <div className="mb-2 flex items-center justify-between text-xs">
                     <span className="font-black uppercase text-slate-300">
-                      PHYSICAL PROGRESS
+                      COMPLETION RATE
                     </span>
                     <span className="font-black text-amber-400">
                       {project.progress}%
@@ -464,13 +464,13 @@ function Dashboard() {
 
                 <div className="mt-4 grid grid-cols-2 gap-3 border-t-2 border-slate-800/80 pt-3 text-xs">
                   <div>
-                    <p className="text-[10px] font-black text-slate-400 uppercase">ALLOCATED BUDGET</p>
+                    <p className="text-[10px] font-black text-slate-400 uppercase">BUDGET</p>
                     <p className="mt-0.5 font-black text-white">
                       {project.budget}
                     </p>
                   </div>
                   <div>
-                    <p className="text-[10px] font-black text-slate-400 uppercase">EXPENDITURE TO DATE</p>
+                    <p className="text-[10px] font-black text-slate-400 uppercase">SPENT SO FAR</p>
                     <p className="mt-0.5 font-black text-white">
                       {project.spent}
                     </p>
@@ -486,8 +486,8 @@ function Dashboard() {
       <section className="grid grid-cols-1 gap-6 xl:grid-cols-2">
         <div className="rounded-md border-2 border-slate-800 bg-slate-900 p-5 shadow-xl">
           <SectionHeading
-            title="Upcoming Milestone Deadlines"
-            subtitle="Critical site inspections and reporting schedules."
+            title="Upcoming Deadlines"
+            subtitle="Important site inspections and scheduled milestones."
             action="VIEW SCHEDULE"
             onAction={() => navigate("/schedule")}
           />
@@ -510,7 +510,7 @@ function Dashboard() {
                     {deadline.title}
                   </p>
                   <p className="mt-2 text-[11px] font-black uppercase text-amber-400">
-                    TARGET DUE: {deadline.date}
+                    DUE: {deadline.date}
                   </p>
                 </div>
 
@@ -530,8 +530,8 @@ function Dashboard() {
 
         <div className="rounded-md border-2 border-slate-800 bg-slate-900 p-5 shadow-xl">
           <SectionHeading
-            title="Recent Activity Stream"
-            subtitle="Real-time operational log entries from field terminals."
+            title="Recent Updates"
+            subtitle="Latest log entries and activity feed from your team."
             action="VIEW REPORTS"
             onAction={() => navigate("/reports")}
           />
@@ -576,10 +576,10 @@ function Dashboard() {
             />
             <div>
               <p className="text-xs font-black uppercase text-amber-300">
-                Operations Directive Reminder
+                Data Verification Note
               </p>
               <p className="mt-1 text-[10px] font-bold leading-relaxed text-amber-200/90 uppercase">
-                Verify physical site inspection logs against milestone requirements before committing permanent database changes.
+                Please double-check physical inspection reports with site supervisors before updating project records.
               </p>
             </div>
           </div>
@@ -595,10 +595,10 @@ function Dashboard() {
 
           <div>
             <h2 className="text-xs font-black uppercase tracking-wider text-white">
-              Weekly Field Operations Audit Review
+              Weekly Progress Review
             </h2>
             <p className="mt-0.5 text-[11px] font-bold text-slate-400 uppercase leading-relaxed">
-              Examine project milestone progress, labor assignments, resource inventory levels, and financial expenditure records.
+              Check overall milestone progress, staff assignments, and expenditure reports for the week.
             </p>
           </div>
         </div>
@@ -607,7 +607,7 @@ function Dashboard() {
           onClick={() => navigate("/reports")}
           className="flex items-center justify-center gap-2 rounded border-2 border-slate-800 bg-slate-950 px-5 py-2.5 text-xs font-black uppercase text-slate-300 transition-colors hover:border-amber-500 hover:text-amber-400 shrink-0"
         >
-          <span>OPEN REPORTS TERMINAL</span>
+          <span>OPEN REPORTS</span>
           <ArrowRight size={15} strokeWidth={2.5} />
         </button>
       </section>
@@ -615,7 +615,7 @@ function Dashboard() {
       <p className="text-center text-[10px] font-black uppercase tracking-wider text-slate-500 leading-relaxed">
         BUILDCONTROL · UNIVERSITY OF IBADAN CONSTRUCTION PROJECT MANAGEMENT PROTOTYPE
         <br />
-        DASHBOARD METRICS AND TERMINAL LOG RECORDS ARE ILLUSTRATIVE SAMPLE DATA.
+        DASHBOARD METRICS AND LOG RECORDS ARE DEMONSTRATION SAMPLE DATA.
       </p>
     </div>
   );

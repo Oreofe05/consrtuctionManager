@@ -10,9 +10,7 @@ import {
   ArrowRight,
   Search,
   ChevronDown,
-  HardHat,
   Activity,
-  ShieldAlert,
 } from "lucide-react";
 
 import { getProjects } from "../data/projects";
@@ -78,7 +76,7 @@ function Schedule() {
       dueDate: project.endDate,
       status: project.status || "Planning",
       progress: Number(project.progress) || 0,
-      responsible: project.manager || "NOT ASSIGNED",
+      responsible: project.manager || "UNASSIGNED",
       projectId: project.id || project.code,
     }));
 
@@ -91,7 +89,7 @@ function Schedule() {
       dueDate: task.dueDate,
       status: task.status || "Pending",
       progress: task.status === "Completed" ? 100 : 0,
-      responsible: task.assignee || "NOT ASSIGNED",
+      responsible: task.assignee || "UNASSIGNED",
       projectId: task.projectId,
       taskId: task.id,
     }));
@@ -177,18 +175,18 @@ function Schedule() {
         <div>
           <div className="mb-2.5 flex items-center gap-2 text-xs font-black uppercase tracking-wider text-slate-300">
             <span className="flex items-center gap-1.5 rounded bg-slate-900 px-2.5 py-1 border-2 border-slate-800 text-amber-400">
-              <CalendarDays size={15} strokeWidth={2.5} /> FIELD SCHEDULE
+              <CalendarDays size={15} strokeWidth={2.5} /> SCHEDULE OVERVIEW
             </span>
             <span className="text-slate-600">/</span>
-            <span className="text-amber-400 font-black">CRITICAL PATH MONITORING</span>
+            <span className="text-amber-400 font-black">TIMELINE & DEADLINES</span>
           </div>
 
           <h1 className="text-3xl font-black tracking-tight text-white uppercase sm:text-4xl">
-            Schedule & Critical Path Control
+            Schedule & Task Timeline
           </h1>
 
           <p className="mt-2 max-w-2xl text-xs font-bold leading-relaxed text-slate-300">
-            Monitor site construction timelines, trade deadlines, critical milestone target dates, and assigned labor directives.
+            Keep track of project timelines, upcoming milestones, task deadlines, and team assignments in one place.
           </p>
         </div>
 
@@ -197,14 +195,14 @@ function Schedule() {
           className="flex items-center justify-center gap-2 rounded border-2 border-amber-400 bg-amber-500 px-5 py-3 font-mono text-xs font-black uppercase text-slate-950 shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all hover:bg-amber-400"
         >
           <CalendarDays size={18} strokeWidth={2.5} />
-          <span>SCHEDULE FIELD TASK</span>
+          <span>ADD NEW TASK</span>
         </Link>
       </div>
 
       {/* Summary KPI Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <SummaryCard
-          title="Scheduled Items"
+          title="Total Scheduled"
           value={scheduleItems.length}
           icon={<CalendarDays size={20} strokeWidth={2.5} />}
           badgeStyle="border-sky-500/50 text-sky-400 bg-slate-950"
@@ -220,7 +218,7 @@ function Schedule() {
         />
 
         <SummaryCard
-          title="Overdue Directives"
+          title="Overdue Tasks"
           value={overdueCount}
           icon={<AlertTriangle size={20} strokeWidth={2.5} />}
           badgeStyle="border-rose-500/50 text-rose-400 bg-slate-950"
@@ -240,12 +238,12 @@ function Schedule() {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div className="flex items-center justify-between rounded-md border-2 border-slate-800 bg-slate-900 p-5 shadow-xl">
           <div>
-            <p className="text-[10px] font-black text-slate-400 uppercase">ACTIVE SITE DOSSIERS</p>
+            <p className="text-[10px] font-black text-slate-400 uppercase">ACTIVE PROJECTS</p>
             <p className="mt-1 text-2xl font-black text-white">
               {projectCount}
             </p>
             <p className="mt-1 text-[10px] font-bold text-slate-400 uppercase">
-              Tracked by commencement and target completion baselines
+              Tracked by start date and target completion goals
             </p>
           </div>
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded border-2 border-amber-500/50 bg-slate-950 text-amber-400">
@@ -255,12 +253,12 @@ function Schedule() {
 
         <div className="flex items-center justify-between rounded-md border-2 border-slate-800 bg-slate-900 p-5 shadow-xl">
           <div>
-            <p className="text-[10px] font-black text-slate-400 uppercase">ASSIGNED FIELD TASKS</p>
+            <p className="text-[10px] font-black text-slate-400 uppercase">ASSIGNED TASKS</p>
             <p className="mt-1 text-2xl font-black text-white">
               {taskCount}
             </p>
             <p className="mt-1 text-[10px] font-bold text-slate-400 uppercase">
-              Tracked by field target deadlines and task status
+              Tracked by individual deadlines and current status
             </p>
           </div>
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded border-2 border-amber-500/50 bg-slate-950 text-amber-400">
@@ -274,13 +272,13 @@ function Schedule() {
         <div className="border-b-2 border-slate-800/80 p-5 sm:p-6">
           <div className="flex items-center gap-2 text-xs font-black uppercase text-amber-400">
             <Activity size={16} strokeWidth={2.5} />
-            <span>CRITICAL PATH REGISTER</span>
+            <span>TIMELINE REGISTER</span>
           </div>
           <h2 className="text-base font-black uppercase tracking-wider text-white mt-0.5">
-            Site Project & Activity Timeline
+            Projects & Tasks Schedule
           </h2>
           <p className="mt-0.5 text-xs font-bold text-slate-300">
-            Audit project deadlines, field work directives, and critical path targets.
+            Search and filter through upcoming deadlines, team responsibilities, and milestones.
           </p>
 
           <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -293,7 +291,7 @@ function Schedule() {
               <input
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
-                placeholder="Search project, task, or assigned supervisor..."
+                placeholder="Search by title, code, or team member..."
                 className={`${inputClass} pl-10`}
               />
             </div>
@@ -304,7 +302,7 @@ function Schedule() {
                 onChange={(event) => setView(event.target.value)}
                 className={`${inputClass} appearance-none pr-8 text-amber-400 cursor-pointer`}
               >
-                <option value="All" className="bg-slate-950 text-white font-black">[ ALL ITEM TYPES ]</option>
+                <option value="All" className="bg-slate-950 text-white font-black">[ ALL TYPES ]</option>
                 <option value="Project" className="bg-slate-950 text-white font-black">PROJECTS ONLY</option>
                 <option value="Task" className="bg-slate-950 text-white font-black">TASKS ONLY</option>
               </select>
@@ -317,10 +315,10 @@ function Schedule() {
                 onChange={(event) => setPeriod(event.target.value)}
                 className={`${inputClass} appearance-none pr-8 text-amber-400 cursor-pointer`}
               >
-                <option value="All" className="bg-slate-950 text-white font-black">[ ALL SCHEDULE STATES ]</option>
-                <option value="Upcoming" className="bg-slate-950 text-white font-black">UPCOMING DEADLINES</option>
-                <option value="Overdue" className="bg-slate-950 text-white font-black">OVERDUE DIRECTIVES</option>
-                <option value="Completed" className="bg-slate-950 text-white font-black">COMPLETED MILESTONES</option>
+                <option value="All" className="bg-slate-950 text-white font-black">[ ALL STATUSES ]</option>
+                <option value="Upcoming" className="bg-slate-950 text-white font-black">UPCOMING</option>
+                <option value="Overdue" className="bg-slate-950 text-white font-black">OVERDUE</option>
+                <option value="Completed" className="bg-slate-950 text-white font-black">COMPLETED</option>
               </select>
               <ChevronDown size={15} strokeWidth={2.5} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" />
             </div>
@@ -333,10 +331,10 @@ function Schedule() {
               <CalendarDays size={32} strokeWidth={2.5} />
             </div>
             <h3 className="mt-4 text-sm font-black uppercase tracking-wider text-white">
-              No Schedule Items Located
+              No Items Found
             </h3>
             <p className="mt-1 max-w-sm text-xs font-bold leading-relaxed text-slate-400 uppercase">
-              No active tasks or project milestones satisfy current parameter queries.
+              No tasks or projects match your current search or filter criteria.
             </p>
           </div>
         ) : (
@@ -379,14 +377,14 @@ function Schedule() {
                     </div>
 
                     <p className="mt-1 text-xs font-bold text-slate-400 uppercase">
-                      SITE CODE: {item.reference || "UNASSIGNED"}
+                      CODE: {item.reference || "N/A"}
                       {" · "}
-                      SUPERVISOR: {item.responsible}
+                      ASSIGNED TO: {item.responsible}
                     </p>
 
                     <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-[11px] font-bold text-slate-300 uppercase">
                       <span>
-                        COMMENCEMENT: {formatDate(item.startDate)}
+                        START: {formatDate(item.startDate)}
                       </span>
                       <span
                         className={
@@ -395,14 +393,14 @@ function Schedule() {
                             : ""
                         }
                       >
-                        TARGET DEADLINE: {formatDate(item.dueDate)}
+                        DUE DATE: {formatDate(item.dueDate)}
                       </span>
                     </div>
 
                     {item.type === "Project" && (
                       <div className="mt-3 max-w-sm">
                         <div className="mb-1 flex justify-between text-[10px] font-black text-slate-400 uppercase">
-                          <span>PHYSICAL PROGRESS</span>
+                          <span>PROGRESS</span>
                           <span className="text-sky-400">{item.progress}%</span>
                         </div>
                         <div className="h-2 overflow-hidden rounded-xs bg-slate-950 border border-slate-800">
@@ -435,7 +433,7 @@ function Schedule() {
                       }
                       className="inline-flex items-center gap-1 text-xs font-black text-amber-400 hover:underline uppercase"
                     >
-                      <span>VIEW DOSSIER</span>
+                      <span>VIEW DETAILS</span>
                       <ArrowRight size={14} strokeWidth={2.5} />
                     </Link>
                   </div>

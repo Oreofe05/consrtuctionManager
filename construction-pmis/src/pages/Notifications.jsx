@@ -1,4 +1,3 @@
-
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -35,19 +34,19 @@ const notificationIcons = {
 };
 
 const notificationColors = {
-  deadline: "bg-amber-50 text-amber-700",
-  budget: "bg-emerald-50 text-emerald-700",
-  progress: "bg-blue-50 text-blue-700",
-  task: "bg-rose-50 text-rose-700",
-  report: "bg-purple-50 text-purple-700",
-  general: "bg-slate-100 text-slate-700",
+  deadline: "border-amber-500/50 text-amber-400 bg-slate-950",
+  budget: "border-emerald-500/50 text-emerald-400 bg-slate-950",
+  progress: "border-sky-500/50 text-sky-400 bg-slate-950",
+  task: "border-rose-500/50 text-rose-400 bg-slate-950",
+  report: "border-purple-500/50 text-purple-400 bg-slate-950",
+  general: "border-slate-700 text-slate-300 bg-slate-950",
 };
 
 function formatNotificationDate(dateString) {
   const date = new Date(dateString);
 
   if (Number.isNaN(date.getTime())) {
-    return "Date unavailable";
+    return "DATE UNAVAILABLE";
   }
 
   return new Intl.DateTimeFormat("en-NG", {
@@ -58,8 +57,11 @@ function formatNotificationDate(dateString) {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,
-  }).format(date);
+  }).format(date).toUpperCase();
 }
+
+const inputClass =
+  "w-full rounded border-2 border-slate-800 bg-slate-950 px-3.5 py-3 font-mono text-xs font-black text-white placeholder-slate-500 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/40";
 
 function Notifications() {
   const { user } = useAuth();
@@ -126,124 +128,127 @@ function Notifications() {
   }
 
   return (
-    <div className="mx-auto max-w-[1400px] space-y-6 pb-8">
+    <div className="mx-auto max-w-[1600px] space-y-6 sm:space-y-8 pb-12 font-mono text-white px-3 sm:px-6">
       {/* Page heading */}
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-        <div>
-          <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-blue-700">
-            <Bell size={17} />
-            Communication Centre
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-slate-800/80 pb-6">
+        <div className="min-w-0">
+          <div className="mb-2 flex items-center gap-2 text-xs font-black uppercase tracking-wider text-slate-300">
+            <span className="flex items-center gap-1.5 rounded bg-slate-900 px-2.5 py-1 border-2 border-slate-800 text-amber-400">
+              <Bell size={15} strokeWidth={2.5} /> COMMUNICATION CENTRE
+            </span>
+            <span className="text-slate-600">/</span>
+            <span className="text-amber-400 font-black">SYSTEM ALERTS</span>
           </div>
 
-          <h1 className="text-3xl font-black tracking-tight text-slate-900">
-            Notifications
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white uppercase">
+            Operations Notifications
           </h1>
 
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-            Keep track of project deadlines, budget alerts, task updates,
-            and construction progress.
+          <p className="mt-2 max-w-2xl text-xs font-bold leading-relaxed text-slate-300 uppercase">
+            Monitor critical project milestone deadlines, budget thresholds, task directives, and site progress dispatches.
           </p>
         </div>
 
         <button
           onClick={handleMarkAllAsRead}
           disabled={unreadCount === 0}
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex items-center justify-center gap-2 rounded border-2 border-slate-800 bg-slate-950 px-4 sm:px-5 py-2.5 sm:py-3 text-xs font-black uppercase text-slate-300 transition-colors hover:border-amber-500 hover:text-amber-400 disabled:cursor-not-allowed disabled:opacity-50 shrink-0 w-full sm:w-auto"
         >
-          <CheckCheck size={17} />
-          Mark all as read
+          <CheckCheck size={16} strokeWidth={2.5} />
+          <span>MARK ALL AS READ</span>
         </button>
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-slate-500">
-              Total notifications
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="rounded-md border-2 border-slate-800 bg-slate-900 p-4 sm:p-5 shadow-xl">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-[11px] font-black uppercase tracking-wider text-slate-300 truncate">
+              Total Dispatches
             </p>
-            <div className="rounded-xl bg-blue-50 p-2.5 text-blue-700">
-              <Bell size={19} />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded border-2 border-sky-500/50 bg-slate-950 text-sky-400">
+              <Bell size={18} strokeWidth={2.5} />
             </div>
           </div>
-          <p className="mt-3 text-3xl font-black text-slate-900">
+          <p className="mt-3 text-2xl sm:text-3xl font-black text-white truncate">
             {notifications.length}
           </p>
-          <p className="mt-1 text-xs text-slate-500">
-            Available to your account
+          <p className="mt-1 text-[10px] font-bold text-slate-400 uppercase truncate">
+            AVAILABLE TO OPERATOR ACCOUNT
           </p>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-slate-500">
-              Unread
+        <div className="rounded-md border-2 border-slate-800 bg-slate-900 p-4 sm:p-5 shadow-xl">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-[11px] font-black uppercase tracking-wider text-slate-300 truncate">
+              Unread Alerts
             </p>
-            <div className="rounded-xl bg-amber-50 p-2.5 text-amber-700">
-              <Inbox size={19} />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded border-2 border-amber-500/50 bg-slate-950 text-amber-400">
+              <Inbox size={18} strokeWidth={2.5} />
             </div>
           </div>
-          <p className="mt-3 text-3xl font-black text-slate-900">
+          <p className="mt-3 text-2xl sm:text-3xl font-black text-amber-400 truncate">
             {unreadCount}
           </p>
-          <p className="mt-1 text-xs text-slate-500">
-            Require your attention
+          <p className="mt-1 text-[10px] font-bold text-slate-400 uppercase truncate">
+            REQUIRES IMMEDIATE REVIEW
           </p>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-slate-500">
-              Read
+        <div className="rounded-md border-2 border-slate-800 bg-slate-900 p-4 sm:p-5 shadow-xl">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-[11px] font-black uppercase tracking-wider text-slate-300 truncate">
+              Reviewed Dispatches
             </p>
-            <div className="rounded-xl bg-emerald-50 p-2.5 text-emerald-700">
-              <CheckCheck size={19} />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded border-2 border-emerald-500/50 bg-slate-950 text-emerald-400">
+              <CheckCheck size={18} strokeWidth={2.5} />
             </div>
           </div>
-          <p className="mt-3 text-3xl font-black text-slate-900">
+          <p className="mt-3 text-2xl sm:text-3xl font-black text-emerald-400 truncate">
             {notifications.length - unreadCount}
           </p>
-          <p className="mt-1 text-xs text-slate-500">
-            Already reviewed
+          <p className="mt-1 text-[10px] font-bold text-slate-400 uppercase truncate">
+            AUDITED & ACKNOWLEDGED
           </p>
         </div>
       </div>
 
       {/* Search and filters */}
-      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <div className="rounded-md border-2 border-slate-800 bg-slate-900 p-4 shadow-xl">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div className="relative w-full lg:max-w-md">
             <Search
-              size={18}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
+              size={16}
+              strokeWidth={2.5}
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-500 pointer-events-none"
             />
             <input
               type="text"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search notifications..."
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+              placeholder="SEARCH NOTIFICATIONS..."
+              className={`${inputClass} pl-10`}
             />
           </div>
 
           <div className="flex flex-wrap gap-2">
             {[
-              { value: "all", label: "All" },
-              { value: "unread", label: "Unread" },
-              { value: "read", label: "Read" },
+              { value: "all", label: "ALL" },
+              { value: "unread", label: "UNREAD" },
+              { value: "read", label: "READ" },
             ].map((option) => (
               <button
                 key={option.value}
                 onClick={() => setFilter(option.value)}
-                className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
+                className={`rounded border-2 px-4 py-2 text-xs font-black uppercase tracking-wider transition-colors ${
                   filter === option.value
-                    ? "bg-slate-900 text-white"
-                    : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                    ? "border-amber-400 bg-amber-500 text-slate-950 shadow-[0_0_10px_rgba(245,158,11,0.3)]"
+                    : "border-slate-800 bg-slate-950 text-slate-300 hover:border-amber-500 hover:text-amber-400"
                 }`}
               >
-                {option.label}
+                <span>{option.label}</span>
                 {option.value === "unread" && unreadCount > 0 && (
-                  <span className="ml-2 rounded-full bg-amber-400 px-2 py-0.5 text-xs font-bold text-slate-950">
+                  <span className="ml-2 rounded bg-amber-950 px-1.5 py-0.5 text-[10px] font-black text-amber-300 border border-amber-500">
                     {unreadCount}
                   </span>
                 )}
@@ -254,39 +259,34 @@ function Notifications() {
       </div>
 
       {/* Notification list */}
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
-          <div>
-            <h2 className="font-bold text-slate-900">
-              Your notifications
+      <div className="overflow-hidden rounded-md border-2 border-slate-800 bg-slate-900 shadow-xl">
+        <div className="flex items-center justify-between border-b-2 border-slate-800/80 px-5 py-4">
+          <div className="min-w-0">
+            <h2 className="text-sm sm:text-base font-black uppercase tracking-wider text-white truncate">
+              System Dispatches
             </h2>
-            <p className="mt-1 text-xs text-slate-500">
-              {filteredNotifications.length}{" "}
-              {filteredNotifications.length === 1
-                ? "notification"
-                : "notifications"}{" "}
-              displayed
+            <p className="mt-0.5 text-[10px] font-bold text-slate-400 uppercase truncate">
+              DISPLAYING {filteredNotifications.length} OF {notifications.length} NOTIFICATIONS
             </p>
           </div>
 
-          <Clock size={18} className="text-slate-400" />
+          <Clock size={18} strokeWidth={2.5} className="text-amber-500 shrink-0" />
         </div>
 
         {filteredNotifications.length === 0 ? (
           <div className="flex flex-col items-center px-5 py-16 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
-              <Inbox size={28} />
+            <div className="flex h-16 w-16 items-center justify-center rounded border-2 border-slate-800 bg-slate-950 text-amber-500">
+              <Inbox size={28} strokeWidth={2.5} />
             </div>
-            <h3 className="mt-4 font-bold text-slate-900">
-              No notifications found
+            <h3 className="mt-4 text-xs sm:text-sm font-black uppercase tracking-wider text-white">
+              No Notifications Located
             </h3>
-            <p className="mt-2 max-w-sm text-sm leading-6 text-slate-500">
-              Try another filter or search term. New notifications will
-              appear here when they are added.
+            <p className="mt-1 max-w-sm text-xs font-bold leading-relaxed text-slate-400 uppercase">
+              No dispatch records satisfy active filter or search query parameters.
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y-2 divide-slate-800/80">
             {filteredNotifications.map((notification) => {
               const Icon =
                 notificationIcons[notification.type] || Bell;
@@ -297,47 +297,47 @@ function Notifications() {
               return (
                 <div
                   key={notification.id}
-                  className={`flex gap-3 p-4 transition sm:gap-4 sm:p-5 ${
+                  className={`flex flex-col sm:flex-row sm:items-start gap-4 p-4 sm:p-5 transition-colors ${
                     notification.isRead
-                      ? "bg-white"
-                      : "bg-blue-50/40"
+                      ? "bg-slate-900/60"
+                      : "bg-slate-950/80 border-l-4 border-l-amber-500"
                   }`}
                 >
                   <div
-                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${iconColor}`}
+                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded border-2 ${iconColor}`}
                   >
-                    <Icon size={20} />
+                    <Icon size={20} strokeWidth={2.5} />
                   </div>
 
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="text-sm font-bold text-slate-900">
+                      <h3 className="text-xs sm:text-sm font-black uppercase text-white truncate">
                         {notification.title}
                       </h3>
 
                       {!notification.isRead && (
-                        <span className="h-2 w-2 rounded-full bg-blue-600" />
+                        <span className="h-2 w-2 rounded-full bg-amber-400 shadow-[0_0_6px_rgba(245,158,11,0.8)]" />
                       )}
 
                       {notification.priority === "high" && (
-                        <span className="rounded-full bg-rose-50 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-rose-700">
-                          High priority
+                        <span className="rounded border border-rose-500 bg-rose-950 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-rose-300">
+                          HIGH PRIORITY
                         </span>
                       )}
                     </div>
 
-                    <p className="mt-2 text-sm leading-6 text-slate-600">
+                    <p className="mt-2 text-xs font-bold leading-relaxed text-slate-300 uppercase">
                       {notification.message}
                     </p>
 
-                    <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-400">
+                    <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] font-black text-slate-400 uppercase">
                       <span>
                         {formatNotificationDate(notification.createdAt)}
                       </span>
                       {notification.projectCode && (
                         <>
                           <span>•</span>
-                          <span className="font-mono font-semibold text-slate-500">
+                          <span className="font-mono font-black text-amber-400">
                             {notification.projectCode}
                           </span>
                         </>
@@ -349,10 +349,10 @@ function Notifications() {
                         onClick={() =>
                           handleOpenNotification(notification)
                         }
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-blue-700 px-3 py-2 text-xs font-semibold text-white transition hover:bg-blue-800"
+                        className="flex items-center gap-1.5 rounded border-2 border-amber-400 bg-amber-500 px-3 py-2 text-[11px] font-black uppercase text-slate-950 shadow-[0_0_10px_rgba(245,158,11,0.2)] transition-all hover:bg-amber-400"
                       >
-                        Open details
-                        <ArrowRight size={14} />
+                        <span>OPEN DETAILS</span>
+                        <ArrowRight size={14} strokeWidth={2.5} />
                       </button>
 
                       {!notification.isRead && (
@@ -360,19 +360,19 @@ function Notifications() {
                           onClick={() =>
                             handleMarkAsRead(notification.id)
                           }
-                          className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-white"
+                          className="flex items-center gap-1.5 rounded border-2 border-slate-800 bg-slate-950 px-3 py-2 text-[11px] font-black uppercase text-slate-300 transition-colors hover:border-amber-500 hover:text-amber-400"
                         >
-                          <Check size={14} />
-                          Mark as read
+                          <Check size={14} strokeWidth={2.5} />
+                          <span>MARK AS READ</span>
                         </button>
                       )}
 
                       <button
                         onClick={() => handleDelete(notification.id)}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-500 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-700"
+                        className="flex items-center gap-1.5 rounded border-2 border-slate-800 bg-slate-950 px-3 py-2 text-[11px] font-black uppercase text-slate-300 transition-colors hover:border-rose-500 hover:text-rose-400"
                       >
-                        <Trash2 size={14} />
-                        Delete
+                        <Trash2 size={14} strokeWidth={2.5} />
+                        <span>DELETE</span>
                       </button>
                     </div>
                   </div>
@@ -383,9 +383,10 @@ function Notifications() {
         )}
       </div>
 
-      <p className="text-center text-xs leading-5 text-slate-400">
-        BuildControl notifications are currently stored in this browser.
-        They are sample records, not live alerts from the construction site.
+      <p className="text-center text-[10px] font-black uppercase tracking-wider text-slate-500 leading-relaxed px-2">
+        BUILDCONTROL NOTIFICATIONS ARE STORED LOCALLY IN BROWSER STORAGE.
+        <br />
+        DISPATCHES ARE DEMO TERMINAL ALERTS, NOT REAL-TIME SITE TELEMETRY.
       </p>
     </div>
   );

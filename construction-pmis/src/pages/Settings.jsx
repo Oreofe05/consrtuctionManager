@@ -7,13 +7,9 @@ import {
   Save,
   RotateCcw,
   Mail,
-  CalendarDays,
-  Banknote,
   CheckCircle2,
   AlertTriangle,
   ChevronDown,
-  HardHat,
-  ShieldAlert,
 } from "lucide-react";
 
 import {
@@ -111,7 +107,7 @@ function Settings() {
   );
 
   return (
-    <div className="mx-auto max-w-6xl space-y-7 text-white pb-12 font-mono">
+    <div className="mx-auto max-w-6xl space-y-7 text-white pb-12 font-mono px-3 sm:px-6">
       {/* Header */}
       <div className="flex flex-col justify-between gap-5 border-b-2 border-slate-800/80 pb-6 lg:flex-row lg:items-end">
         <div>
@@ -120,15 +116,15 @@ function Settings() {
               <SettingsIcon size={15} strokeWidth={2.5} /> SYSTEM ADMINISTRATION
             </span>
             <span className="text-slate-600">/</span>
-            <span className="text-amber-400 font-black">SYSTEM PARAMETERS</span>
+            <span className="text-amber-400 font-black">PREFERENCES</span>
           </div>
 
           <h1 className="text-3xl font-black tracking-tight text-white uppercase sm:text-4xl">
-            System Settings & Controls
+            Settings & Controls
           </h1>
 
           <p className="mt-2 max-w-2xl text-xs font-bold leading-relaxed text-slate-300">
-            Configure BuildControl organization parameters, notification directives, and operational application preferences.
+            Configure your organization profile, notification preferences, and application settings.
           </p>
         </div>
 
@@ -138,7 +134,7 @@ function Settings() {
           className="flex items-center justify-center gap-2 rounded border-2 border-slate-700 bg-slate-900 px-4 py-3 text-xs font-black uppercase text-slate-300 transition-colors hover:border-amber-500 hover:text-amber-400"
         >
           <RotateCcw size={16} strokeWidth={2.5} className="text-amber-500" />
-          <span>RESTORE SYSTEM DEFAULTS</span>
+          <span>RESTORE DEFAULTS</span>
         </button>
       </div>
 
@@ -165,7 +161,7 @@ function Settings() {
         {/* Settings Navigation */}
         <aside className="rounded-md border-2 border-slate-800 bg-slate-900 p-3 shadow-xl">
           <p className="px-3 pb-3 pt-2 text-[10px] font-black uppercase tracking-wider text-amber-400 border-b-2 border-slate-800/80 mb-2">
-            CONTROL SECTIONS
+            SECTIONS
           </p>
 
           <nav className="space-y-1">
@@ -206,10 +202,10 @@ function Settings() {
                   </div>
                   <div>
                     <h2 className="text-base font-black uppercase tracking-wider text-white">
-                      Organization Dossier
+                      Organization Details
                     </h2>
                     <p className="mt-0.5 text-xs font-bold text-slate-400">
-                      Primary entity specifications associated with BuildControl operations.
+                      Primary entity specifications associated with your workspace.
                     </p>
                   </div>
                 </div>
@@ -231,7 +227,7 @@ function Settings() {
 
                   <div>
                     <label className="mb-2 block text-xs font-black uppercase tracking-wider text-slate-300">
-                      SYSTEM IDENTIFIER NAME <span className="text-amber-500">*</span>
+                      SYSTEM NAME <span className="text-amber-500">*</span>
                     </label>
                     <input
                       value={settings.systemName}
@@ -245,7 +241,7 @@ function Settings() {
 
                   <div>
                     <label className="mb-2 block text-xs font-black uppercase tracking-wider text-slate-300">
-                      DEPARTMENT / DIRECTORATE <span className="text-amber-500">*</span>
+                      DEPARTMENT <span className="text-amber-500">*</span>
                     </label>
                     <input
                       value={settings.department}
@@ -291,7 +287,7 @@ function Settings() {
                       Regional Formatting
                     </h2>
                     <p className="mt-0.5 text-xs font-bold text-slate-400">
-                      Define global financial currency standards and date formatting conventions.
+                      Define global currency standards and date formatting conventions.
                     </p>
                   </div>
                 </div>
@@ -299,7 +295,7 @@ function Settings() {
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   <div>
                     <label className="mb-2 block text-xs font-black uppercase tracking-wider text-slate-300">
-                      OPERATIONAL CURRENCY
+                      CURRENCY
                     </label>
                     <div className="relative">
                       <select
@@ -319,7 +315,7 @@ function Settings() {
 
                   <div>
                     <label className="mb-2 block text-xs font-black uppercase tracking-wider text-slate-300">
-                      SYSTEM DATE FORMAT
+                      DATE FORMAT
                     </label>
                     <div className="relative">
                       <select
@@ -339,7 +335,7 @@ function Settings() {
                 </div>
 
                 <p className="mt-4 rounded border border-amber-500/40 bg-amber-950/40 p-3 text-[11px] font-bold leading-relaxed text-amber-300">
-                  REGIONAL PARAMETERS ARE PERSISTED LOCALLY. MODULE COMPONENTS READ THESE SETTINGS TO FORMAT CURRENCY AND DATES DYNAMICALLY.
+                  REGIONAL SETTINGS ARE SAVED LOCALLY AND APPLIED ACROSS ALL MODULES AUTOMATICALLY.
                 </p>
               </section>
             </>
@@ -353,10 +349,10 @@ function Settings() {
                 </div>
                 <div>
                   <h2 className="text-base font-black uppercase tracking-wider text-white">
-                    Notification Directives
+                    Notification Preferences
                   </h2>
                   <p className="mt-0.5 text-xs font-bold text-slate-400">
-                    Configure automated field alerts, deadline triggers, and status updates.
+                    Choose which alerts and updates you wish to receive.
                   </p>
                 </div>
               </div>
@@ -364,7 +360,7 @@ function Settings() {
               <div>
                 <Toggle
                   title="PROJECT STATUS UPDATES"
-                  description="Automated alerts relating to physical project milestone updates and completion states."
+                  description="Receive alerts when project milestone progress or completion states change."
                   checked={settings.notifications.projectUpdates}
                   onChange={(value) =>
                     updateNestedField("notifications", "projectUpdates", value)
@@ -373,7 +369,7 @@ function Settings() {
 
                 <Toggle
                   title="TASK DEADLINE REMINDERS"
-                  description="Automated alerts for approaching field labor task due dates and critical paths."
+                  description="Receive reminders for approaching task due dates and critical milestones."
                   checked={settings.notifications.taskDeadlines}
                   onChange={(value) =>
                     updateNestedField("notifications", "taskDeadlines", value)
@@ -382,7 +378,7 @@ function Settings() {
 
                 <Toggle
                   title="BUDGET VARIANCE ALERTS"
-                  description="Immediate alerts when site expenditure exceeds target cost thresholds."
+                  description="Get notified immediately when project expenditures exceed target thresholds."
                   checked={settings.notifications.budgetAlerts}
                   onChange={(value) =>
                     updateNestedField("notifications", "budgetAlerts", value)
@@ -391,7 +387,7 @@ function Settings() {
 
                 <Toggle
                   title="PROGRESS REPORT LOGS"
-                  description="Notifications when field audit reports are logged into database archives."
+                  description="Receive notices when new field progress reports are added to archives."
                   checked={settings.notifications.progressReports}
                   onChange={(value) =>
                     updateNestedField("notifications", "progressReports", value)
@@ -400,7 +396,7 @@ function Settings() {
               </div>
 
               <p className="mt-5 rounded border border-slate-800 bg-slate-950 p-3 text-[11px] font-bold leading-relaxed text-slate-400">
-                NOTIFICATION DIRECTIVES STORE USER PREFERENCES. EMAIL AND PUSH TRANSMISSION REQUIRES ACTIVE SERVER DISPATCH PIPELINE.
+                NOTIFICATION PREFERENCES ARE STORED LOCALLY IN YOUR BROWSER.
               </p>
             </section>
           )}
@@ -413,10 +409,10 @@ function Settings() {
                 </div>
                 <div>
                   <h2 className="text-base font-black uppercase tracking-wider text-white">
-                    Terminal View Preferences
+                    Display & View Preferences
                   </h2>
                   <p className="mt-0.5 text-xs font-bold text-slate-400">
-                    Configure terminal layout densities and dashboard view defaults.
+                    Configure layout density and dashboard welcome message display.
                   </p>
                 </div>
               </div>
@@ -424,7 +420,7 @@ function Settings() {
               <div>
                 <Toggle
                   title="COMPACT DATA TABLES"
-                  description="Render high-density tabular layouts across all audit and project registers."
+                  description="Use high-density tabular layouts across all project and audit lists."
                   checked={settings.preferences.compactTable}
                   onChange={(value) =>
                     updateNestedField("preferences", "compactTable", value)
@@ -433,7 +429,7 @@ function Settings() {
 
                 <Toggle
                   title="WELCOME BANNER DISPLAY"
-                  description="Display operational welcome banner on the main executive dashboard."
+                  description="Show the welcome overview banner on the main dashboard."
                   checked={settings.preferences.showWelcomeMessage}
                   onChange={(value) =>
                     updateNestedField(
@@ -446,7 +442,7 @@ function Settings() {
               </div>
 
               <p className="mt-5 rounded border border-slate-800 bg-slate-950 p-3 text-[11px] font-bold leading-relaxed text-slate-400">
-                PREFERENCES ARE STORED IN LOCAL STORAGE AND APPLY AUTOMATICALLY TO TERMINAL INTERFACES.
+                PREFERENCES ARE SAVED LOCALLY AND APPLY AUTOMATICALLY ACROSS THE APPLICATION.
               </p>
             </section>
           )}
@@ -457,7 +453,7 @@ function Settings() {
               className="flex items-center justify-center gap-2 rounded border-2 border-amber-400 bg-amber-500 px-6 py-2.5 font-mono text-xs font-black uppercase text-slate-950 shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all hover:bg-amber-400"
             >
               <Save size={16} strokeWidth={2.5} />
-              <span>COMMIT SETTINGS</span>
+              <span>SAVE SETTINGS</span>
             </button>
           </div>
         </form>
@@ -480,11 +476,11 @@ function Settings() {
               id="reset-title"
               className="mt-4 text-base font-black uppercase tracking-wider text-white"
             >
-              RESET ALL SYSTEM SETTINGS?
+              RESTORE DEFAULT SETTINGS?
             </h2>
 
             <p className="mt-2 text-xs font-bold leading-relaxed text-slate-400 uppercase">
-              THIS ACTION RESTORES DEFAULT ORGANIZATION METADATA AND REGIONAL PREFERENCES. PROJECT RECORDS, TASKS, EXPENDITURES, AND USER ACCOUNTS WILL NOT BE AFFECTED.
+              THIS ACTION RESTORES DEFAULT ORGANIZATION METADATA AND PREFERENCES. YOUR PROJECTS, TASKS, AND EXPENSE RECORDS WILL NOT BE AFFECTED.
             </p>
 
             <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">

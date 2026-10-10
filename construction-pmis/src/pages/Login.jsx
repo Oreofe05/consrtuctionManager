@@ -35,7 +35,6 @@ function Login() {
     setError("");
     setLoading(true);
 
-    // Simulates a short login operation for the frontend demo.
     const result = login(email, password);
 
     if (result.success) {
@@ -69,7 +68,7 @@ function Login() {
               BuildControl
             </h1>
             <p className="text-[10px] font-black uppercase tracking-widest text-amber-400">
-              Operations Terminal
+              Project Management
             </p>
           </div>
         </div>
@@ -77,35 +76,35 @@ function Login() {
         <div className="relative z-10 max-w-lg">
           <div className="mb-5 inline-flex items-center gap-2 rounded border-2 border-amber-500/50 bg-slate-950 px-3.5 py-1.5 text-xs font-black uppercase tracking-wider text-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.2)]">
             <ShieldCheck size={16} strokeWidth={2.5} />
-            SECURE SITE OVERSIGHT SYSTEM
+            CONSTRUCTION MANAGEMENT PLATFORM
           </div>
 
           <h2 className="text-4xl font-black uppercase tracking-tight leading-tight xl:text-5xl text-white">
-            Every structure.
+            Every project.
             <br />
             Every resource.
             <br />
-            <span className="text-amber-400">One terminal.</span>
+            <span className="text-amber-400">In one place.</span>
           </h2>
 
-          <p className="mt-6 max-w-md text-xs font-bold leading-relaxed text-slate-300 uppercase">
-            Monitor physical construction projects, manage resource inventory, audit site expenditure, and track milestone progress from a centralized command interface.
+          <p className="mt-6 max-w-md text-xs font-bold leading-relaxed text-slate-300">
+            Monitor construction projects, manage resource inventory, track expenditures, and review site progress from a centralized dashboard.
           </p>
 
           <div className="mt-10 grid grid-cols-2 gap-4">
             <div className="rounded border-2 border-slate-800 bg-slate-950 p-5 shadow-xl">
               <Building2 size={20} strokeWidth={2.5} className="text-amber-400" />
-              <p className="mt-3 text-xs font-black uppercase text-white">Site Oversight</p>
+              <p className="mt-3 text-xs font-black uppercase text-white">Project Oversight</p>
               <p className="mt-1 text-[10px] font-bold text-slate-400 uppercase leading-relaxed">
-                Maintain rigorous project metadata records.
+                Keep track of schedules and deliverables.
               </p>
             </div>
 
             <div className="rounded border-2 border-slate-800 bg-slate-950 p-5 shadow-xl">
               <ShieldCheck size={20} strokeWidth={2.5} className="text-amber-400" />
-              <p className="mt-3 text-xs font-black uppercase text-white">Role Authorization</p>
+              <p className="mt-3 text-xs font-black uppercase text-white">Role Access</p>
               <p className="mt-1 text-[10px] font-bold text-slate-400 uppercase leading-relaxed">
-                Verify operator clearance levels.
+                Manage user permissions and accounts.
               </p>
             </div>
           </div>
@@ -128,7 +127,7 @@ function Login() {
                 BuildControl
               </h1>
               <p className="text-[10px] font-black uppercase text-amber-400">
-                Operations Terminal
+                Project Management
               </p>
             </div>
           </div>
@@ -139,11 +138,11 @@ function Login() {
             </div>
 
             <h2 className="text-2xl font-black uppercase tracking-tight text-white sm:text-3xl">
-              Authentication Portal
+              Welcome Back
             </h2>
 
             <p className="mt-1.5 text-xs font-bold leading-relaxed text-slate-400 uppercase">
-              Authenticate operator credentials to access the command workspace.
+              Sign in to access your dashboard.
             </p>
           </div>
 
@@ -153,7 +152,7 @@ function Login() {
                 htmlFor="email"
                 className="mb-2 block text-xs font-black uppercase tracking-wider text-slate-300"
               >
-                OPERATOR EMAIL <span className="text-amber-500">*</span>
+                EMAIL ADDRESS <span className="text-amber-500">*</span>
               </label>
 
               <div className="relative">
@@ -173,7 +172,7 @@ function Login() {
                     setError("");
                   }}
                   required
-                  placeholder="operator@buildcontrol.demo"
+                  placeholder="name@buildcontrol.demo"
                   className={`${inputClass} pl-10`}
                 />
               </div>
@@ -185,10 +184,10 @@ function Login() {
                   htmlFor="password"
                   className="text-xs font-black uppercase tracking-wider text-slate-300"
                 >
-                  SECURITY PASSWORD <span className="text-amber-500">*</span>
+                  PASSWORD <span className="text-amber-500">*</span>
                 </label>
                 <span className="text-[10px] font-black uppercase text-amber-400">
-                  DEMO CREDENTIALS
+                  DEMO CREDENTIALS BELOW
                 </span>
               </div>
 
@@ -209,7 +208,7 @@ function Login() {
                     setError("");
                   }}
                   required
-                  placeholder="Enter security password"
+                  placeholder="Enter your password"
                   className={`${inputClass} pl-10 pr-12`}
                 />
 
@@ -239,7 +238,7 @@ function Login() {
               disabled={loading}
               className="flex w-full items-center justify-center gap-2 rounded border-2 border-amber-400 bg-amber-500 px-4 py-3 font-mono text-xs font-black uppercase text-slate-950 shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              <span>{loading ? "AUTHENTICATING..." : "AUTHORIZE & SIGN IN"}</span>
+              <span>{loading ? "SIGNING IN..." : "SIGN IN"}</span>
               <ArrowRight size={16} strokeWidth={2.5} />
             </button>
           </form>
@@ -252,7 +251,7 @@ function Login() {
             </div>
 
             <p className="mt-1 text-[10px] font-bold text-slate-400 uppercase leading-relaxed">
-              Select an operational role to auto-populate credentials.
+              Click a role to quickly populate credentials:
             </p>
 
             <div className="mt-4 grid grid-cols-2 gap-2">
@@ -301,7 +300,7 @@ function Login() {
           <p className="mt-7 text-center text-[10px] font-black uppercase tracking-wider text-slate-500 leading-relaxed">
             BUILDCONTROL · UNIVERSITY OF IBADAN CASE STUDY
             <br />
-            FRONTEND TERMINAL DEMO — NO REAL CREDENTIALS REQUIRED.
+            DEMO MODE — NO REAL CREDENTIALS REQUIRED.
           </p>
         </div>
       </section>

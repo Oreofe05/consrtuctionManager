@@ -18,7 +18,6 @@ import {
   Wrench,
   Activity,
   AlertTriangle,
-  HelpCircle,
 } from "lucide-react";
 
 const faqs = [
@@ -183,7 +182,7 @@ function HelpSupport() {
   };
 
   return (
-    <div className="mx-auto max-w-[1600px] space-y-8 pb-12 font-mono text-white">
+    <div className="mx-auto max-w-[1600px] space-y-8 pb-12 font-mono text-white px-3 sm:px-6">
       {/* Page heading */}
       <div className="border-b-2 border-slate-800/80 pb-6">
         <div className="mb-2.5 flex items-center gap-2 text-xs font-black uppercase tracking-wider text-slate-300">
@@ -191,15 +190,15 @@ function HelpSupport() {
             <CircleHelp size={15} strokeWidth={2.5} /> HELP CENTRE
           </span>
           <span className="text-slate-600">/</span>
-          <span className="text-amber-400 font-black">SUPPORT DIRECTIVES</span>
+          <span className="text-amber-400 font-black">SUPPORT</span>
         </div>
 
         <h1 className="text-3xl font-black tracking-tight text-white uppercase sm:text-4xl">
-          Help & Support Terminal
+          Help & Support
         </h1>
 
         <p className="mt-2 max-w-2xl text-xs font-bold leading-relaxed text-slate-300">
-          Access system operational documentation, review frequently asked questions, and log technical support tickets.
+          Access system documentation, review frequently asked questions, or reach out to support.
         </p>
       </div>
 
@@ -211,15 +210,15 @@ function HelpSupport() {
         <div className="relative z-10 max-w-2xl">
           <span className="inline-flex items-center gap-2 rounded border-2 border-amber-500/50 bg-slate-950 px-3 py-1 font-mono text-xs font-black uppercase tracking-wider text-amber-400">
             <BookOpen size={14} strokeWidth={2.5} />
-            BUILDCONTROL OPERATIONS MANUAL
+            BUILDCONTROL USER MANUAL
           </span>
 
           <h2 className="mt-5 text-2xl font-black uppercase tracking-tight text-white sm:text-3xl">
-            System Terminal Assistance
+            How can we help you today?
           </h2>
 
-          <p className="mt-2 text-xs font-bold leading-relaxed text-slate-300 uppercase">
-            Search operational FAQs or navigate directly to project management modules. Access tools for tracking resources, budgets, and physical site progress.
+          <p className="mt-2 text-xs font-bold leading-relaxed text-slate-300">
+            Search our operational FAQs below or jump straight to your project management modules to track resources, tasks, and budgets.
           </p>
 
           <div className="mt-6 flex max-w-xl items-center gap-3 rounded border-2 border-slate-800 bg-slate-950 px-4 py-2.5 shadow-inner">
@@ -231,7 +230,7 @@ function HelpSupport() {
                 setSearchTerm(event.target.value);
                 setOpenFaq(0);
               }}
-              placeholder="SEARCH HELP ARTICLES AND FAQS..."
+              placeholder="Search help articles and FAQs..."
               className="w-full border-0 bg-transparent font-mono text-xs font-black text-white placeholder-slate-500 outline-none"
               aria-label="Search frequently asked questions"
             />
@@ -244,10 +243,10 @@ function HelpSupport() {
         <div className="mb-4">
           <div className="flex items-center gap-2 text-xs font-black uppercase text-amber-400">
             <Activity size={16} strokeWidth={2.5} />
-            <span>MODULE NAVIGATION</span>
+            <span>QUICK NAVIGATION</span>
           </div>
           <h2 className="text-base font-black uppercase tracking-wider text-white mt-0.5">
-            Quick Access Terminal
+            Modules
           </h2>
           <p className="mt-0.5 text-xs font-bold text-slate-400 uppercase">
             Jump directly to core construction management modules.
@@ -354,17 +353,17 @@ function HelpSupport() {
                   className="mx-auto text-slate-600"
                 />
                 <p className="mt-3 text-xs font-black uppercase tracking-wider text-white">
-                  No Matching FAQs Located
+                  No Matching FAQs Found
                 </p>
                 <p className="mt-1 text-xs font-bold text-slate-400 uppercase">
-                  Modify search query parameters.
+                  Try adjusting your search query.
                 </p>
                 <button
                   type="button"
                   onClick={() => setSearchTerm("")}
                   className="mt-3 text-xs font-black uppercase text-amber-400 hover:underline"
                 >
-                  CLEAR SEARCH QUERY
+                  CLEAR SEARCH
                 </button>
               </div>
             )}
@@ -382,7 +381,7 @@ function HelpSupport() {
             </div>
             <div>
               <h2 className="text-base font-black uppercase tracking-wider text-white">
-                Log Support Ticket
+                Submit Support Ticket
               </h2>
               <p className="mt-0.5 text-xs font-bold text-slate-400 uppercase">
                 Submit an operational query or report an issue.
@@ -405,7 +404,7 @@ function HelpSupport() {
                 onChange={handleChange}
                 required
                 maxLength={100}
-                placeholder="ENG. O. OKONKWO"
+                placeholder="e.g. John Doe"
                 className={inputClass}
               />
             </div>
@@ -466,7 +465,7 @@ function HelpSupport() {
                 htmlFor="support-message"
                 className="mb-2 block text-xs font-black uppercase tracking-wider text-slate-300"
               >
-                ISSUE DESCRIPTION <span className="text-amber-500">*</span>
+                MESSAGE <span className="text-amber-500">*</span>
               </label>
               <textarea
                 id="support-message"
@@ -477,7 +476,7 @@ function HelpSupport() {
                 minLength={10}
                 maxLength={2000}
                 rows={4}
-                placeholder="Detail technical issue or operational question..."
+                placeholder="Describe your question or technical issue..."
                 className={`${inputClass} resize-y`}
               />
               <p className="mt-1 text-right text-[10px] font-bold text-slate-400">
@@ -502,7 +501,7 @@ function HelpSupport() {
               >
                 <CheckCircle2 size={16} strokeWidth={2.5} className="shrink-0 text-emerald-400" />
                 <span>
-                  SUPPORT REQUEST SAVED LOCALLY TO BROWSER STORAGE.
+                  SUPPORT TICKET SAVED LOCALLY TO BROWSER STORAGE.
                 </span>
               </div>
             )}
@@ -512,11 +511,11 @@ function HelpSupport() {
               className="flex w-full items-center justify-center gap-2 rounded border-2 border-amber-400 bg-amber-500 px-4 py-3 text-xs font-black uppercase text-slate-950 shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all hover:bg-amber-400"
             >
               <Send size={16} strokeWidth={2.5} />
-              <span>COMMIT SUPPORT TICKET</span>
+              <span>SUBMIT SUPPORT TICKET</span>
             </button>
 
             <p className="text-[10px] font-bold leading-relaxed text-slate-400 uppercase">
-              TERMINAL DEMO MODE: TICKETS ARE STORED LOCALLY IN BROWSER STORAGE.
+              DEMO MODE: TICKETS ARE STORED LOCALLY IN BROWSER STORAGE.
             </p>
           </form>
         </section>
@@ -542,7 +541,7 @@ function HelpSupport() {
           to="/"
           className="inline-flex shrink-0 items-center gap-2 text-xs font-black uppercase text-amber-400 hover:underline"
         >
-          <span>RETURN TO COMMAND DASHBOARD</span>
+          <span>RETURN TO DASHBOARD</span>
           <ArrowRight size={15} strokeWidth={2.5} />
         </Link>
       </div>
